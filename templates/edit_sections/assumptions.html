@@ -1,0 +1,61 @@
+<div>
+    <h3>Assumptions — Stock/Bond Mix Overrides</h3>
+
+    <p>Leave blank to use defaults.</p>
+
+    <div class="form-row">
+        <label>Aggressive – Stock %</label>
+        <input type="number" step="0.01" name="aggressive_stock"
+               value="{{ data.get('aggressive_stock', '') }}"
+               onchange="currentData.aggressive_stock = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Aggressive – Bond %</label>
+        <input type="number" step="0.01" name="aggressive_bond"
+               value="{{ data.get('aggressive_bond', '') }}"
+               onchange="currentData.aggressive_bond = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Growth – Stock %</label>
+        <input type="number" step="0.01" name="growth_stock"
+               value="{{ data.get('growth_stock', '') }}"
+               onchange="currentData.growth_stock = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Growth – Bond %</label>
+        <input type="number" step="0.01" name="growth_bond"
+               value="{{ data.get('growth_bond', '') }}"
+               onchange="currentData.growth_bond = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Growth With Income – Stock %</label>
+        <input type="number" step="0.01" name="growth_income_stock"
+               value="{{ data.get('growth_income_stock', '') }}"
+               onchange="currentData.growth_income_stock = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Growth With Income – Bond %</label>
+        <input type="number" step="0.01" name="growth_income_bond"
+               value="{{ data.get('growth_income_bond', '') }}"
+               onchange="currentData.growth_income_bond = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Intermediate Growth – Stock %</label>
+        <input type="number" step="0.01" name="intermediate_stock"
+               value="{{ data.get('intermediate_stock', '') }}"
+               onchange="currentData.intermediate_stock = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Intermediate Growth – Bond %</label>
+        <input type="number" step="0.01" name="intermediate_bond"
+               value="{{ data.get('intermediate_bond', '') }}"
+               onchange="currentData.intermediate_bond = this.value; updateCharts();">
+    </div>
+</div>

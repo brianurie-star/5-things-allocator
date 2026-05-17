@@ -1,0 +1,67 @@
+<div class="section-title mb-3">Protection Inputs</div>
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label>Life Insurance Amount</label>
+        <input type="text" class="form-control" name="life_ins_amount"
+               value="{{ '%.0f'|format(data.life_ins_amount) }}">
+    </div>
+    <div class="col-md-4">
+        <label>LTC Monthly Benefit</label>
+        <input type="text" class="form-control" name="ltc_ins_amount"
+               value="{{ '%.0f'|format(data.ltc_ins_amount) }}">
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label>Auto Liability Coverage</label>
+        <input type="text" class="form-control" name="auto_liability"
+               value="{{ '%.0f'|format(data.auto_liability) }}">
+    </div>
+    <div class="col-md-4">
+        <label>Home Liability Coverage</label>
+        <input type="text" class="form-control" name="home_liability"
+               value="{{ '%.0f'|format(data.home_liability) }}">
+    </div>
+    <div class="col-md-4">
+        <label>Umbrella Coverage</label>
+        <input type="text" class="form-control" name="umbrella_coverage"
+               value="{{ '%.0f'|format(data.umbrella_coverage) }}">
+    </div>
+</div>
+
+<hr class="my-4">
+
+<h6>Annual Premiums</h6>
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label>Life Insurance Premium (annual)</label>
+        <input type="text" class="form-control" name="life_premium"
+               value="{{ '%.0f'|format(data.life_premium) }}">
+    </div>
+    <div class="col-md-4">
+        <label>LTC Insurance Premium (annual)</label>
+        <input type="text" class="form-control" name="ltc_premium"
+               value="{{ '%.0f'|format(data.ltc_premium) }}">
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label>Auto Insurance Premium (annual)</label>
+        <input type="text" class="form-control" name="auto_premium"
+               value="{{ '%.0f'|format(data.auto_premium) }}">
+    </div>
+    <div class="col-md-4">
+        <label>Homeowner’s Insurance Premium (annual)</label>
+        <input type="text" class="form-control" name="home_premium"
+               value="{{ '%.0f'|format(data.home_premium) }}">
+    </div>
+    <div class="col-md-4">
+        <label>Umbrella Premium (annual)</label>
+        <input type="text" class="form-control" name="umbrella_premium"
+               value="{{ '%.0f'|format(data.umbrella_premium) }}">
+    </div>
+</div>

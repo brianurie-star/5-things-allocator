@@ -1,0 +1,9 @@
+.export_cache
+.cursor
+__pycache__
+*.pyc
+*.pyo
+.git
+.env
+.env.*
+terminals

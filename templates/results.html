@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>5Things™ Retirement Allocator Results</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            margin-top: 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 6px;
+        }
+
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .chart-box {
+            flex: 1;
+            min-width: 350px;
+            text-align: center;
+        }
+
+        .chart-box img {
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #ddd;
+            padding: 6px;
+            background: #fafafa;
+        }
+
+        .edit-button {
+            margin-top: 20px;
+            padding: 10px 18px;
+            background: #0078d4;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .edit-button:hover {
+            background: #005fa3;
+        }
+
+        #editModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        #editContent {
+            background: white;
+            width: 600px;
+            margin: 80px auto;
+            padding: 20px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>5Things™ Retirement Allocator Results</h1>
+
+    <!-- ========================= -->
+    <!-- Investment Profile Preview -->
+    <!-- ========================= -->
+    <div class="section-title">Investment Profile Preview</div>
+
+    <div class="chart-row">
+        <div class="chart-box">
+            <img id="investment_profile_chart"
+                 src="{{ charts['investment_profile'] }}"
+                 alt="Investment Profile Preview">
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Strategy Allocation -->
+    <!-- ========================= -->
+    <div class="section-title">Strategy Allocation</div>
+
+    <div class="chart-row">
+        <div class="chart-box">
+            <img id="strategy_allocation_chart"
+                 src="{{ charts['strategy_allocation'] }}"
+                 alt="Strategy Allocation">
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Guaranteed vs Expenses -->
+    <!-- ========================= -->
+    <div class="section-title">Guaranteed Income vs Expenses</div>
+
+    <div class="chart-row">
+        <div class="chart-box">
+            <img id="guaranteed_vs_expenses_chart"
+                 src="{{ charts['guaranteed_vs_expenses'] }}"
+                 alt="Guaranteed vs Expenses">
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Sample Range -->
+    <!-- ========================= -->
+    <div class="section-title">Sample Range of Annual Outcomes</div>
+
+    <div class="chart-row">
+        <div class="chart-box">
+            <img id="sample_range_chart"
+                 src="{{ charts['sample_range'] }}"
+                 alt="Sample Range">
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- Edit Inputs Button -->
+    <!-- ========================= -->
+    <button class="edit-button" onclick="openEditModal()">Edit Inputs & Recalculate</button>
+
+
+    <!-- ========================= -->
+    <!-- Modal for Editing Sections -->
+    <!-- ========================= -->
+    <div id="editModal">
+        <div id="editContent">
+            <h3>Edit Inputs</h3>
+            <div id="editContainer">
+                <!-- AJAX-loaded partial goes here -->
+            </div>
+            <button class="edit-button" onclick="closeEditModal()">Close</button>
+        </div>
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- JavaScript for AJAX Editing -->
+    <!-- ========================= -->
+    <script>
+        let currentData = {{ data | tojson }};
+        let currentProfile = "{{ profile }}";
+
+        function openEditModal() {
+            document.getElementById("editModal").style.display = "block";
+            loadEditSection("cashflow");
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+        function loadEditSection(section) {
+            fetch("/edit_section", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    section: section,
+                    data: currentData
+                })
+            })
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("editContainer").innerHTML = html;
+            });
+        }
+
+function updateCharts() {
+    fetch("/update_charts", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            data: currentData,
+            risk_profile: currentProfile
+        })
+    })
+    .then(r => r.json())
+    .then(res => {
+        document.getElementById("investment_profile_chart").src = res.charts.investment_profile;
+        document.getElementById("strategy_allocation_chart").src = res.charts.strategy_allocation;
+        document.getElementById("guaranteed_vs_expenses_chart").src = res.charts.guaranteed_vs_expenses;
+        document.getElementById("sample_range_chart").src = res.charts.sample_range;
+    });
+}
+
+//////////////////////////////////////////////////////////////
+// ⭐ ADD THIS BLOCK RIGHT HERE — NOT ANYWHERE ELSE ⭐
+//////////////////////////////////////////////////////////////
+
+// Sync accordion with top tabs
+document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        const section = tab.textContent.trim().toLowerCase()
+            .replace(/ & /g, "_")
+            .replace(/ /g, "_");
+
+        loadEditSection(section);
+    });
+});
+
+//////////////////////////////////////////////////////////////
+
+</script>
+    </script>
+
+</body>
+</html>

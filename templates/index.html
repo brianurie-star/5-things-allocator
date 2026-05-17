@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ready to Retire | Alpine Retirement Consulting</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="entry-screen">
+      <h1>5 Things™ Allocator</h1>
+      <p>Start with data entry, then calculate results.</p>
+
+      <div class="entry-stack">
+        <div class="card">
+          <h2>Client & Household</h2>
+          <div class="two-col-stack">
+            <div>
+              <label>Client Name
+                <input id="client_name" value="{{ defaults.client_name }}">
+              </label>
+              <label>His Age
+                <input id="his_age" type="number" value="{{ defaults.his_age }}">
+              </label>
+              <label>His Life Expectancy
+                <input id="his_life_expectancy" type="number" value="{{ defaults.his_life_expectancy }}">
+              </label>
+              <a class="helper-link" href="https://www.livingto100.com" target="_blank" rel="noopener noreferrer">Life expectancy assessment</a>
+            </div>
+            <div>
+              <label>Report Date
+                <input id="report_date" type="date" value="{{ defaults.report_date }}">
+              </label>
+              <label>Her Age
+                <input id="her_age" type="number" value="{{ defaults.her_age }}">
+              </label>
+              <label>Her Life Expectancy
+                <input id="her_life_expectancy" type="number" value="{{ defaults.her_life_expectancy }}">
+              </label>
+              <a class="helper-link" href="https://www.livingto100.com" target="_blank" rel="noopener noreferrer">Life expectancy assessment</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Income & Expenses</h2>
+          <div class="two-col-stack">
+            <div>
+              <label>His Social Security
+                <input id="his_social_security" type="number" value="{{ defaults.his_social_security }}">
+              </label>
+              <label>His Pension
+                <input id="his_pension" type="number" value="{{ defaults.his_pension }}">
+              </label>
+              <label>His Other Income
+                <input id="his_other_income" type="number" value="{{ defaults.his_other_income }}">
+              </label>
+              <label>Basic Living Expenses (Will Solve for Amount Available for Extras)
+                <input id="monthly_living_expenses" type="number" value="{{ defaults.monthly_living_expenses }}">
+              </label>
+            </div>
+            <div>
+              <label>Her Social Security
+                <input id="her_social_security" type="number" value="{{ defaults.her_social_security }}">
+              </label>
+              <label>Her Pension
+                <input id="her_pension" type="number" value="{{ defaults.her_pension }}">
+              </label>
+              <label>Her Other Income
+                <input id="her_other_income" type="number" value="{{ defaults.her_other_income }}">
+              </label>
+              <label>Tax Rate (%)
+                <input id="tax_rate" type="number" step="1" value="{{ (defaults.tax_rate * 100)|int }}">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Assets & Strategy</h2>
+          <div class="single-section-grid">
+            <label>Retirement Assets
+              <input id="retirement_assets" type="number" value="{{ defaults.retirement_assets }}">
+            </label>
+            <label>Non-Retirement Assets
+              <input id="non_retirement_assets" type="number" value="{{ defaults.non_retirement_assets }}">
+            </label>
+            <label>Home Value
+              <input id="home_value" type="number" value="{{ defaults.home_value }}">
+            </label>
+            <label>Mortgage Balance
+              <input id="mortgage_balance" type="number" value="{{ defaults.mortgage_balance }}">
+            </label>
+            <label>Guaranteed Income Allocation (%)
+              <input id="guaranteed_income_allocation" type="number" step="1" value="{{ (defaults.guaranteed_income_allocation * 100)|int }}">
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Investment Profile</h2>
+          <div class="investment-profile-grid">
+            <div>
+              <label>Risk Profile
+                <select id="risk_profile">
+                  <option value="aggressive">Aggressive</option>
+                  <option value="growth" {% if defaults.risk_profile == 'growth' %}selected{% endif %}>Growth</option>
+                  <option value="growthIncome" {% if defaults.risk_profile == 'growthIncome' %}selected{% endif %}>Growth With Income</option>
+                  <option value="intermediate" {% if defaults.risk_profile == 'intermediate' %}selected{% endif %}>Intermediate Growth</option>
+                </select>
+              </label>
+            </div>
+            <div class="investment-profile-charts">
+              <div class="card chart-card-inner">
+                <div class="pie-chart-host">
+                  <canvas id="entryProfileChart"></canvas>
+                </div>
+              </div>
+              <div class="card chart-card-inner outcomes-chart-card">
+                <div class="bar-chart-host outcomes-chart-host">
+                  <canvas id="entryOutcomesChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Protection Inputs</h2>
+          <div class="protection-layout">
+            <div class="protection-grid-row five-col">
+              <label>Life Insurance Protection
+                <input id="life_insurance_protection" type="number" value="{{ defaults.life_insurance_protection }}">
+              </label>
+              <label>LTC Insurance Protection
+                <input id="ltc_insurance_protection" type="number" value="{{ defaults.ltc_insurance_protection }}">
+              </label>
+              <label>Auto Insurance Protection
+                <input id="auto_insurance_protection" type="number" value="{{ defaults.auto_insurance_protection }}">
+              </label>
+              <label>Home Insurance Protection
+                <input id="home_insurance_protection" type="number" value="{{ defaults.home_insurance_protection }}">
+              </label>
+              <label>Umbrella Insurance Protection
+                <input id="umbrella_insurance_protection" type="number" value="{{ defaults.umbrella_insurance_protection }}">
+              </label>
+            </div>
+
+            <div class="protection-grid-row five-col">
+              <label>Life Insurance Monthly Cost
+                <input id="life_insurance_monthly_cost" type="number" value="{{ defaults.life_insurance_monthly_cost }}">
+              </label>
+              <label>LTC Insurance Monthly Cost
+                <input id="ltc_insurance_monthly_cost" type="number" value="{{ defaults.ltc_insurance_monthly_cost }}">
+              </label>
+              <label>Auto Insurance Monthly Cost
+                <input id="auto_insurance_monthly_cost" type="number" value="{{ defaults.auto_insurance_monthly_cost }}">
+              </label>
+              <label>Home Insurance Monthly Cost
+                <input id="home_insurance_monthly_cost" type="number" value="{{ defaults.home_insurance_monthly_cost }}">
+              </label>
+              <label>Umbrella Insurance Monthly Cost
+                <input id="umbrella_insurance_monthly_cost" type="number" value="{{ defaults.umbrella_insurance_monthly_cost }}">
+              </label>
+            </div>
+
+            <div class="protection-grid-row three-col">
+              <label>Monthly LTC Cost
+                <input id="monthly_ltc_cost" type="number" value="{{ defaults.monthly_ltc_cost }}">
+              </label>
+              <label>LTC Years
+                <input id="ltc_years" type="number" value="{{ defaults.ltc_years }}">
+              </label>
+              <label>Lawsuit Award
+                <input id="lawsuit_award" type="number" value="{{ defaults.lawsuit_award }}">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <details id="entryAdvancedDetails">
+          <summary>Advanced</summary>
+          <div class="accordion-cushion">
+            <div class="card" style="margin:0;">
+              <div class="single-section-grid">
+                <label>Guaranteed Withdrawal Rate (%)
+                  <input id="guaranteed_withdrawal_rate" type="number" step="1" value="{{ (defaults.guaranteed_withdrawal_rate * 100)|int }}">
+                </label>
+                <label>Unprotected Withdrawal Rate (%)
+                  <input id="unprotected_withdrawal_rate" type="number" step="1" value="{{ (defaults.unprotected_withdrawal_rate * 100)|int }}">
+                </label>
+                <label>Inflation (%)
+                  <input id="inflation" type="number" step="1" value="{{ (defaults.inflation * 100)|int }}">
+                </label>
+              </div>
+
+              <div class="card" style="margin-top:18px;">
+                <h3 style="margin-top:0; margin-bottom:12px;">Editable Portfolio Profiles</h3>
+                <div class="profile-table-wrap">
+                  <table class="profile-table">
+                    <thead>
+                      <tr>
+                        <th>Profile</th>
+                        <th>Mean (%)</th>
+                        <th>Standard Deviation (%)</th>
+                        <th>Equity (%)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Aggressive</th>
+                        <td><input aria-label="Aggressive Mean" id="aggressive_mean" type="number" step="0.01" value="{{ defaults.aggressive_mean }}"></td>
+                        <td><input aria-label="Aggressive Standard Deviation" id="aggressive_stdev" type="number" step="0.01" value="{{ defaults.aggressive_stdev }}"></td>
+                        <td><input aria-label="Aggressive Equity" id="aggressive_equity" type="number" step="1" value="{{ defaults.aggressive_equity }}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Growth</th>
+                        <td><input aria-label="Growth Mean" id="growth_mean" type="number" step="0.01" value="{{ defaults.growth_mean }}"></td>
+                        <td><input aria-label="Growth Standard Deviation" id="growth_stdev" type="number" step="0.01" value="{{ defaults.growth_stdev }}"></td>
+                        <td><input aria-label="Growth Equity" id="growth_equity" type="number" step="1" value="{{ defaults.growth_equity }}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Growth With Income</th>
+                        <td><input aria-label="Growth With Income Mean" id="growthIncome_mean" type="number" step="0.01" value="{{ defaults.growthIncome_mean }}"></td>
+                        <td><input aria-label="Growth With Income Standard Deviation" id="growthIncome_stdev" type="number" step="0.01" value="{{ defaults.growthIncome_stdev }}"></td>
+                        <td><input aria-label="Growth With Income Equity" id="growthIncome_equity" type="number" step="1" value="{{ defaults.growthIncome_equity }}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Intermediate Growth</th>
+                        <td><input aria-label="Intermediate Growth Mean" id="intermediate_mean" type="number" step="0.01" value="{{ defaults.intermediate_mean }}"></td>
+                        <td><input aria-label="Intermediate Growth Standard Deviation" id="intermediate_stdev" type="number" step="0.01" value="{{ defaults.intermediate_stdev }}"></td>
+                        <td><input aria-label="Intermediate Growth Equity" id="intermediate_equity" type="number" step="1" value="{{ defaults.intermediate_equity }}"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <button class="primary" onclick="calculate()">Calculate Results</button>
+    </div>
+
+    <div id="results-screen" class="hidden">
+      <div class="topbar">
+        <div>
+          <h1>5 Things™ Allocator</h1>
+          <p id="client-title"></p>
+        </div>
+        <div class="topbar-actions">
+          <div class="balance-sheet-segment" role="group" aria-label="Balance sheet mode">
+            <button
+              id="balanceSheetPartial"
+              class="balance-sheet-option is-active"
+              type="button"
+              onclick="setBalanceSheetMode('partial')"
+              aria-pressed="true"
+            >
+              Partial Balance Sheet
+            </button>
+            <button
+              id="balanceSheetFull"
+              class="balance-sheet-option"
+              type="button"
+              onclick="setBalanceSheetMode('full')"
+              aria-pressed="false"
+            >
+              Full Balance Sheet
+            </button>
+          </div>
+          <button onclick="exportPdf()">Export PDF</button>
+          <button onclick="showEntry()">Back to Data Entry</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <span>Monthly Income</span>
+          <strong id="kpi-income"></strong>
+        </div>
+        <div class="kpi">
+          <span>Monthly Expenses</span>
+          <strong id="kpi-expenses"></strong>
+        </div>
+        <div class="kpi">
+          <span>Investable Assets</span>
+          <strong id="kpi-assets"></strong>
+        </div>
+        <div class="kpi">
+          <span>Estimated Available Home Equity</span>
+          <strong id="kpi-home-equity"></strong>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="openTab('cashflow', this)">Cash Flow</button>
+        <button class="tab" onclick="openTab('strategy', this)">Investment Strategy</button>
+        <button class="tab" onclick="openTab('risks', this)">Risks</button>
+        <button class="tab" onclick="openTab('selfinsurance', this)">Self-Insurance</button>
+      </div>
+
+      <div id="cashflow" class="tab-content active">
+        <div class="chart-grid two">
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="cashFlowChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="bar-chart-host">
+              <canvas id="expenseCoverageChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="strategy" class="tab-content">
+        <div class="chart-grid two">
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="profileChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="allocationChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card outcomes-chart-card">
+          <div class="bar-chart-host outcomes-chart-host">
+            <canvas id="outcomesChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div id="risks" class="tab-content">
+        <div class="chart-grid two">
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="earlyDeathChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="ltcChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="lawsuitChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="lawsuitIncomeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="selfinsurance" class="tab-content">
+        <div class="kpis" style="margin-bottom:18px;">
+          <div class="kpi">
+            <span>Total Self-Insurance Need</span>
+            <strong id="selfInsuranceTotal"></strong>
+          </div>
+        </div>
+
+        <div class="chart-grid two">
+          <div class="card">
+            <div class="bar-chart-host">
+              <canvas id="selfInsuranceChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="pie-chart-host">
+              <canvas id="selfInsurancePieChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card accordion-wrap">
+        <h2>Data Entry &amp; Recalculate</h2>
+
+        <details>
+          <summary>Client & Household</summary>
+          <div class="accordion-cushion">
+            <div class="two-col-stack">
+              <div>
+                <label>Client Name
+                  <input id="edit_client_name">
+                </label>
+                <label>His Age
+                  <input id="edit_his_age" type="number">
+                </label>
+                <label>His Life Expectancy
+                  <input id="edit_his_life_expectancy" type="number">
+                </label>
+                <a class="helper-link" href="https://www.livingto100.com" target="_blank" rel="noopener noreferrer">Life expectancy assessment</a>
+              </div>
+              <div>
+                <label>Report Date
+                  <input id="edit_report_date" type="date">
+                </label>
+                <label>Her Age
+                  <input id="edit_her_age" type="number">
+                </label>
+                <label>Her Life Expectancy
+                  <input id="edit_her_life_expectancy" type="number">
+                </label>
+                <a class="helper-link" href="https://www.livingto100.com" target="_blank" rel="noopener noreferrer">Life expectancy assessment</a>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Income & Expenses</summary>
+          <div class="accordion-cushion">
+            <div class="two-col-stack">
+              <div>
+                <label>His Social Security
+                  <input id="edit_his_social_security" type="number">
+                </label>
+                <label>His Pension
+                  <input id="edit_his_pension" type="number">
+                </label>
+                <label>His Other Income
+                  <input id="edit_his_other_income" type="number">
+                </label>
+                <label>Basic Living Expenses (Will Solve for Amount Available for Extras)
+                  <input id="edit_monthly_living_expenses" type="number">
+                </label>
+              </div>
+              <div>
+                <label>Her Social Security
+                  <input id="edit_her_social_security" type="number">
+                </label>
+                <label>Her Pension
+                  <input id="edit_her_pension" type="number">
+                </label>
+                <label>Her Other Income
+                  <input id="edit_her_other_income" type="number">
+                </label>
+                <label>Tax Rate (%)
+                  <input id="edit_tax_rate" type="number" step="1">
+                </label>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Assets & Strategy</summary>
+          <div class="accordion-cushion">
+            <div class="accordion-grid">
+              <label>Retirement Assets
+                <input id="edit_retirement_assets" type="number">
+              </label>
+              <label>Non-Retirement Assets
+                <input id="edit_non_retirement_assets" type="number">
+              </label>
+              <label>Home Value
+                <input id="edit_home_value" type="number">
+              </label>
+              <label>Mortgage Balance
+                <input id="edit_mortgage_balance" type="number">
+              </label>
+              <label>Guaranteed Income Allocation (%)
+                <input id="edit_guaranteed_income_allocation" type="number" step="1">
+              </label>
+            </div>
+          </div>
+        </details>
+
+        <details id="accordion-investment-profile">
+          <summary>Investment Profile</summary>
+          <div class="accordion-cushion">
+            <div class="investment-profile-grid">
+              <div>
+                <label>Risk Profile
+                  <select id="edit_risk_profile">
+                    <option value="aggressive">Aggressive</option>
+                    <option value="growth">Growth</option>
+                    <option value="growthIncome">Growth With Income</option>
+                    <option value="intermediate">Intermediate Growth</option>
+                  </select>
+                </label>
+              </div>
+              <div class="investment-profile-charts">
+                <div class="card chart-card-inner">
+                  <div class="pie-chart-host">
+                    <canvas id="accordionProfileChart"></canvas>
+                  </div>
+                </div>
+                <div class="card chart-card-inner outcomes-chart-card">
+                  <div class="bar-chart-host outcomes-chart-host">
+                    <canvas id="accordionOutcomesChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Protection Inputs</summary>
+          <div class="accordion-cushion">
+            <div class="protection-layout">
+              <div class="protection-grid-row five-col">
+                <label>Life Insurance Protection
+                  <input id="edit_life_insurance_protection" type="number">
+                </label>
+                <label>LTC Insurance Protection
+                  <input id="edit_ltc_insurance_protection" type="number">
+                </label>
+                <label>Auto Insurance Protection
+                  <input id="edit_auto_insurance_protection" type="number">
+                </label>
+                <label>Home Insurance Protection
+                  <input id="edit_home_insurance_protection" type="number">
+                </label>
+                <label>Umbrella Insurance Protection
+                  <input id="edit_umbrella_insurance_protection" type="number">
+                </label>
+              </div>
+
+              <div class="protection-grid-row five-col">
+                <label>Life Insurance Monthly Cost
+                  <input id="edit_life_insurance_monthly_cost" type="number">
+                </label>
+                <label>LTC Insurance Monthly Cost
+                  <input id="edit_ltc_insurance_monthly_cost" type="number">
+                </label>
+                <label>Auto Insurance Monthly Cost
+                  <input id="edit_auto_insurance_monthly_cost" type="number">
+                </label>
+                <label>Home Insurance Monthly Cost
+                  <input id="edit_home_insurance_monthly_cost" type="number">
+                </label>
+                <label>Umbrella Insurance Monthly Cost
+                  <input id="edit_umbrella_insurance_monthly_cost" type="number">
+                </label>
+              </div>
+
+              <div class="protection-grid-row three-col">
+                <label>Monthly LTC Cost
+                  <input id="edit_monthly_ltc_cost" type="number">
+                </label>
+                <label>LTC Years
+                  <input id="edit_ltc_years" type="number">
+                </label>
+                <label>Lawsuit Award
+                  <input id="edit_lawsuit_award" type="number">
+                </label>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Advanced</summary>
+          <div class="accordion-cushion">
+            <div class="accordion-grid">
+              <label>Guaranteed Withdrawal Rate (%)
+                <input id="edit_guaranteed_withdrawal_rate" type="number" step="1">
+              </label>
+              <label>Unprotected Withdrawal Rate (%)
+                <input id="edit_unprotected_withdrawal_rate" type="number" step="1">
+              </label>
+              <label>Inflation (%)
+                <input id="edit_inflation" type="number" step="1">
+              </label>
+            </div>
+
+            <div class="card" style="margin-top:18px;">
+              <h3 style="margin-top:0; margin-bottom:12px;">Editable Portfolio Profiles</h3>
+              <div class="profile-table-wrap">
+                <table class="profile-table">
+                  <thead>
+                    <tr>
+                      <th>Profile</th>
+                      <th>Mean (%)</th>
+                      <th>Standard Deviation (%)</th>
+                      <th>Equity (%)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Aggressive</th>
+                      <td><input aria-label="Edit Aggressive Mean" id="edit_aggressive_mean" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Aggressive Standard Deviation" id="edit_aggressive_stdev" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Aggressive Equity" id="edit_aggressive_equity" type="number" step="1"></td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row">Growth</th>
+                      <td><input aria-label="Edit Growth Mean" id="edit_growth_mean" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Growth Standard Deviation" id="edit_growth_stdev" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Growth Equity" id="edit_growth_equity" type="number" step="1"></td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row">Growth With Income</th>
+                      <td><input aria-label="Edit Growth With Income Mean" id="edit_growthIncome_mean" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Growth With Income Standard Deviation" id="edit_growthIncome_stdev" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Growth With Income Equity" id="edit_growthIncome_equity" type="number" step="1"></td>
+                    </tr>
+
+                    <tr>
+                      <th scope="row">Intermediate Growth</th>
+                      <td><input aria-label="Edit Intermediate Growth Mean" id="edit_intermediate_mean" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Intermediate Growth Standard Deviation" id="edit_intermediate_stdev" type="number" step="0.01"></td>
+                      <td><input aria-label="Edit Intermediate Growth Equity" id="edit_intermediate_equity" type="number" step="1"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <button class="primary" onclick="recalculateFromAccordion()">Recalculate Results</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

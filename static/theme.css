@@ -1,0 +1,57 @@
+/* Alpine Retirement Consulting — shared brand tokens */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap");
+
+:root {
+  --alpine-navy: #1b2d47;
+  --alpine-navy-dark: #0f1f35;
+  --alpine-navy-mid: #243a5c;
+  --alpine-gold: #c4a574;
+  --alpine-gold-dark: #a88652;
+  --alpine-gold-light: #e8d9c0;
+  --alpine-white: #ffffff;
+  --alpine-on-navy: #f8fafc;
+  --alpine-bg: #f5f4f1;
+  --alpine-bg-warm: #faf9f7;
+  --alpine-text: #1b2d47;
+  --alpine-muted: #5c6b7f;
+  --alpine-border: rgba(27, 45, 71, 0.12);
+  --alpine-shadow: 0 12px 32px rgba(15, 31, 53, 0.12);
+  --alpine-shadow-soft: 0 4px 14px rgba(15, 31, 53, 0.06);
+  --alpine-radius: 6px;
+  --alpine-radius-lg: 10px;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Montserrat", "Segoe UI", Arial, sans-serif;
+
+  /* Map legacy allocator tokens to Alpine palette */
+  --bg: var(--alpine-bg);
+  --panel: rgba(255, 255, 255, 0.96);
+  --panel-strong: #ffffff;
+  --border: var(--alpine-border);
+  --text: var(--alpine-text);
+  --muted: var(--alpine-muted);
+  --shadow: var(--alpine-shadow);
+  --shadow-soft: var(--alpine-shadow-soft);
+  --radius: var(--alpine-radius-lg);
+  --accent: var(--alpine-gold);
+  --primary: var(--alpine-navy);
+}
+
+/* Navy buttons — light text (anchors need explicit color; body link styles often override) */
+.btn-primary,
+a.btn-primary,
+button.btn-primary,
+button.primary {
+  color: var(--alpine-on-navy);
+  font-weight: 600;
+}
+
+.btn-primary:hover,
+a.btn-primary:hover,
+button.btn-primary:hover,
+button.primary:hover,
+.btn-primary:focus-visible,
+a.btn-primary:focus-visible,
+button.btn-primary:focus-visible,
+button.primary:focus-visible {
+  color: var(--alpine-white);
+}

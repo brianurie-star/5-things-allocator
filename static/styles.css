@@ -1,0 +1,590 @@
+* {
+  box-sizing: border-box;
+}
+
+/* Pie charts: static/app.js makePie() + basePieOptions() — data entry profile + results tabs */
+:root {
+  --pie-host-max-width: 560px;
+  --pie-chart-card-min-height: 360px;
+  --bar-chart-min-height: 300px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--text);
+  background: var(--alpine-bg-warm);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-family: var(--font-serif);
+  font-size: 2.3rem;
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--alpine-navy);
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--alpine-navy);
+  letter-spacing: 0.01em;
+}
+
+p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
+
+.entry-stack {
+  display: grid;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.chart-grid,
+.kpis,
+.accordion-grid,
+.single-section-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.chart-grid.two {
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+}
+
+.chart-grid.three {
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+}
+
+.chart-grid.four {
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+}
+
+.kpis {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin: 0 0 22px;
+}
+
+.accordion-grid,
+.single-section-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card,
+.kpi {
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.kpi {
+  background: var(--panel-strong);
+  padding: 20px 22px;
+}
+
+.kpi span {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.kpi strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: rgba(27, 45, 71, 0.45);
+  box-shadow: 0 0 0 3px rgba(196, 165, 116, 0.25);
+}
+
+button {
+  border: 0;
+  border-radius: 16px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button.primary {
+  margin-top: 20px;
+  background: var(--alpine-navy);
+  border-radius: var(--alpine-radius);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+button.primary:hover {
+  background: var(--alpine-navy-mid);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  padding: 22px;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  box-shadow: var(--shadow);
+}
+
+.topbar button {
+  background: white;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow-soft);
+}
+
+.tabs {
+  display: inline-flex;
+  gap: 10px;
+  margin: 4px 0 22px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.tab {
+  background: transparent;
+  color: var(--muted);
+  border-radius: 14px;
+  padding: 11px 16px;
+  font-weight: 600;
+}
+
+.tab.active {
+  background: var(--alpine-navy);
+  color: var(--alpine-on-navy);
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+details {
+  margin-bottom: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: rgba(248, 250, 252, 0.85);
+  overflow: hidden;
+}
+
+summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 16px 18px;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] summary {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.accordion-cushion {
+  padding: 18px 24px 22px;
+}
+
+.two-col-stack {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.two-col-stack > div {
+  display: grid;
+  gap: 14px;
+}
+
+.investment-profile-grid {
+  display: grid;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.investment-profile-charts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.two-charts-row {
+  grid-template-columns: 220px 1fr 1fr;
+}
+
+#strategy .outcomes-chart-card {
+  grid-column: 1 / -1;
+}
+
+.outcomes-chart-host {
+  width: 100%;
+  min-height: var(--bar-chart-min-height);
+  position: relative;
+}
+
+.outcomes-chart-host > canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: var(--bar-chart-min-height);
+}
+
+.chart-card-inner.outcomes-chart-card,
+.card.outcomes-chart-card {
+  display: block;
+}
+
+#strategy.tab-content.active {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.helper-link {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--alpine-navy-mid);
+  text-decoration: none;
+  margin-top: -2px;
+}
+
+.helper-link:hover {
+  text-decoration: underline;
+}
+
+.chart-card-inner {
+  padding: 18px;
+  min-height: var(--pie-chart-card-min-height);
+}
+
+.chart-card-inner:has(.pie-chart-host):not(:has(.bar-chart-host)) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chart.js sets canvas bitmap dimensions; forcing a mismatched CSS box stretches the image. */
+.chart-grid > .card {
+  min-height: var(--pie-chart-card-min-height);
+}
+
+/*
+ * Pie chart canvas host — square box, capped width — matches Chart.js maintainAspectRatio + aspectRatio 1.
+ * Every pie canvas on #entry-screen, #edit-screen (accordion), and #results-screen must sit inside .pie-chart-host.
+ * Do not set canvas height: 100% here: in grid/flex it can resolve badly and Chart.js will draw the pie in a corner.
+ */
+.pie-chart-host {
+  width: min(100%, var(--pie-host-max-width));
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  aspect-ratio: 1;
+  position: relative;
+  min-height: 0;
+  align-self: center;
+}
+
+.pie-chart-host > canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-width: none;
+}
+
+/* Center pies in tall chart cards (e.g. Key Retirement Risks) without affecting bar-chart cards */
+.chart-grid > .card:has(.pie-chart-host):not(:has(.bar-chart-host)) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Vertical bar charts (Annual Coverage, Self-Insurance bar): stable height for Chart.js + PDF bitmaps */
+.bar-chart-host {
+  width: 100%;
+  min-height: var(--bar-chart-min-height);
+  position: relative;
+}
+
+.bar-chart-host > canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: var(--bar-chart-min-height);
+}
+
+.accordion-wrap h2 {
+  margin-bottom: 18px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+#entry-screen > p {
+  margin-bottom: 20px;
+}
+
+/* Surgical additions */
+
+.card.accordion-wrap {
+  margin-top: 30px;
+}
+
+#entry-screen .entry-stack,
+#edit-screen .entry-stack {
+  gap: 12px;
+  margin-top: 14px;
+}
+
+#entry-screen .card,
+#edit-screen .card {
+  padding: 16px;
+  border-radius: 18px;
+}
+
+#entry-screen h2,
+#edit-screen h2 {
+  margin-bottom: 10px;
+}
+
+#entry-screen .two-col-stack,
+#entry-screen .accordion-grid,
+#entry-screen .single-section-grid,
+#edit-screen .two-col-stack,
+#edit-screen .accordion-grid,
+#edit-screen .single-section-grid {
+  gap: 12px;
+}
+
+#entry-screen .two-col-stack > div,
+#edit-screen .two-col-stack > div {
+  gap: 10px;
+}
+
+#entry-screen label,
+#edit-screen label {
+  gap: 4px;
+  font-size: 0.84rem;
+}
+
+#entry-screen input,
+#entry-screen select,
+#edit-screen input,
+#edit-screen select {
+  padding: 9px 11px;
+  border-radius: 10px;
+}
+
+#entry-screen details,
+#edit-screen details {
+  margin-bottom: 10px;
+}
+
+#entry-screen summary,
+#edit-screen summary {
+  padding: 12px 14px;
+}
+
+#entry-screen .accordion-cushion,
+#edit-screen .accordion-cushion {
+  padding: 12px 14px 14px;
+}
+
+.protection-layout {
+  display: grid;
+  gap: 10px;
+}
+
+.protection-grid-row {
+  display: grid;
+  gap: 12px;
+}
+
+.protection-grid-row.five-col {
+  grid-template-columns: repeat(5, minmax(130px, 1fr));
+}
+
+.protection-grid-row.three-col {
+  grid-template-columns: repeat(3, minmax(170px, 1fr));
+}
+
+.profile-table-wrap {
+  overflow-x: auto;
+}
+
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.profile-table th,
+.profile-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.profile-table thead th {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.profile-table tbody th {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.profile-table td input {
+  margin: 0;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.balance-sheet-segment {
+  display: inline-flex;
+  align-items: stretch;
+  background: #eef1f6;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.balance-sheet-option {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: none;
+}
+
+.balance-sheet-option:hover {
+  color: var(--text);
+}
+
+.balance-sheet-option.is-active {
+  background: white;
+  color: var(--text);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 1100px) {
+  .chart-grid.two,
+  .chart-grid.three,
+  .chart-grid.four,
+  .two-col-stack,
+  .two-charts-row,
+  .investment-profile-charts,
+  .topbar {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 18px;
+  }
+
+  .profile-table {
+    min-width: 620px;
+  }
+
+  .protection-grid-row.five-col,
+  .protection-grid-row.three-col {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,554 @@
+/* Alpine Retirement Consulting — home page */
+
+.home-page {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--alpine-text);
+  background: var(--alpine-bg);
+  line-height: 1.55;
+}
+
+.home-page h1,
+.home-page h2,
+.home-page h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--alpine-navy);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+.home-page p {
+  margin: 0 0 1rem;
+  color: var(--alpine-muted);
+}
+
+.home-page a:not(.btn) {
+  color: var(--alpine-navy-mid);
+}
+
+/* —— Site header (overlaid on hero) —— */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1.25rem 1.75rem;
+}
+
+.site-header--overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background: transparent;
+  border-bottom: none;
+}
+
+.site-header--no-logo {
+  justify-content: flex-end;
+}
+
+.site-header--no-logo .site-nav {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  color: var(--alpine-navy);
+}
+
+.logo-mark-img {
+  flex-shrink: 0;
+  width: 56px;
+  height: auto;
+  display: block;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  line-height: 1;
+}
+
+.logo-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--alpine-navy);
+}
+
+.logo-sub {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--alpine-navy);
+}
+
+.site-header--overlay .site-logo,
+.site-header--overlay .site-nav a {
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.85);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-left: auto;
+}
+
+.site-nav a {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--alpine-navy);
+}
+
+.site-nav a:hover {
+  color: var(--alpine-gold-dark);
+}
+
+.btn-nav {
+  padding: 0.65rem 1.1rem !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* —— Hero —— */
+.home-hero {
+  background: var(--alpine-navy-dark);
+}
+
+.hero-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(360px, 52vw, 560px);
+  overflow: hidden;
+}
+
+.hero-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 18%),
+    linear-gradient(0deg, rgba(15, 31, 53, 0.82) 0%, rgba(15, 31, 53, 0.35) 38%, transparent 68%),
+    url("hero-background.png?v=3") center center / cover no-repeat;
+}
+
+.hero-overlay-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 5.5rem 1.75rem 2.75rem;
+  text-align: center;
+}
+
+.hero-overlay-copy h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 3.5vw, 2.35rem);
+  font-weight: 600;
+  color: var(--alpine-white);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+  line-height: 1.15;
+}
+
+.hero-overlay-copy p {
+  margin: 0;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.55;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+}
+
+.site-header--overlay .site-nav a {
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.9);
+}
+
+/* —— Buttons —— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.72rem 1.35rem;
+  border-radius: var(--alpine-radius);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.btn-primary {
+  background: var(--alpine-navy);
+}
+
+.btn-primary:hover {
+  background: var(--alpine-navy-mid);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--alpine-white);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--alpine-white);
+}
+
+main .btn-secondary {
+  background: var(--alpine-white);
+  color: var(--alpine-navy);
+  border-color: var(--alpine-border);
+}
+
+main .btn-secondary:hover {
+  background: var(--alpine-bg-warm);
+}
+
+.btn-lg {
+  padding: 0.9rem 1.75rem;
+  font-size: 0.88rem;
+}
+
+/* —— Sections —— */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.75rem;
+}
+
+.section-intro {
+  max-width: 40rem;
+  margin-bottom: 2rem;
+}
+
+.section-intro h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.85rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--alpine-gold-dark);
+}
+
+/* —— Five things grid —— */
+.things-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.thing-card {
+  background: var(--alpine-white);
+  border: 1px solid var(--alpine-border);
+  border-radius: var(--alpine-radius-lg);
+  padding: 1.35rem;
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.thing-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.75rem;
+  border-radius: var(--alpine-radius);
+  background: var(--alpine-gold-light);
+  color: var(--alpine-navy);
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+}
+
+.thing-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.thing-card p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* —— Decisions —— */
+.decisions-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.decisions-grid li {
+  background: var(--alpine-white);
+  border: 1px solid var(--alpine-border);
+  border-radius: var(--alpine-radius-lg);
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.decisions-grid strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  color: var(--alpine-navy);
+}
+
+.decisions-grid span {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--alpine-muted);
+  line-height: 1.45;
+}
+
+/* —— Advisor —— */
+.advisor-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.advisor-copy h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.75rem;
+}
+
+.advisor-role {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--alpine-navy-mid);
+}
+
+.credential-list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.credential-list li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--alpine-border);
+  color: var(--alpine-muted);
+  font-size: 0.95rem;
+}
+
+.credential-list li:last-child {
+  border-bottom: none;
+}
+
+.advisor-note {
+  font-size: 0.92rem;
+}
+
+.advisor-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.advisor-aside {
+  display: grid;
+  gap: 1rem;
+}
+
+.aside-card {
+  background: var(--alpine-white);
+  border: 1px solid var(--alpine-border);
+  border-radius: var(--alpine-radius-lg);
+  padding: 1.15rem 1.25rem;
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.aside-card-muted {
+  background: var(--alpine-bg-warm);
+}
+
+.aside-card h3 {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+}
+
+.aside-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--alpine-muted);
+  font-size: 0.92rem;
+}
+
+.aside-card li + li {
+  margin-top: 0.35rem;
+}
+
+.aside-card p {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+}
+
+.wharton-card {
+  background: linear-gradient(165deg, var(--alpine-navy-dark) 0%, var(--alpine-navy) 100%);
+  border-color: transparent;
+  color: var(--alpine-white);
+}
+
+.wharton-card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--alpine-white);
+  font-size: 1.15rem;
+}
+
+.wharton-card p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.wharton-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--alpine-gold);
+}
+
+.wharton-meta {
+  margin-bottom: 0.75rem !important;
+  font-weight: 600;
+  font-size: 0.88rem !important;
+  color: var(--alpine-gold-light) !important;
+}
+
+.wharton-topics-label {
+  margin: 0.75rem 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--alpine-gold);
+}
+
+.wharton-topics {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.wharton-topics li + li {
+  margin-top: 0.35rem;
+}
+
+/* —— CTA band —— */
+.cta-band {
+  text-align: center;
+  background: var(--alpine-navy);
+  border-radius: var(--alpine-radius-lg);
+  color: var(--alpine-white);
+  max-width: calc(1100px - 3.5rem);
+  margin-bottom: 2rem;
+}
+
+.cta-band h2 {
+  margin: 0 0 0.75rem;
+  color: var(--alpine-white);
+  font-size: 1.75rem;
+}
+
+.cta-band p {
+  max-width: 36rem;
+  margin: 0 auto 1.25rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.cta-band .btn-primary {
+  background: var(--alpine-white);
+  color: var(--alpine-navy);
+}
+
+.cta-band .btn-primary:hover {
+  background: var(--alpine-gold-light);
+}
+
+/* —— Footer —— */
+.home-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.75rem 2.5rem;
+  border-top: 1px solid var(--alpine-border);
+  padding-top: 1.5rem;
+}
+
+.home-footer p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--alpine-muted);
+}
+
+.home-footer a {
+  color: var(--alpine-navy-mid);
+}
+
+@media (max-width: 860px) {
+  .site-header,
+  .site-header--overlay {
+    justify-content: center;
+  }
+
+  .site-nav {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .things-grid,
+  .decisions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .advisor-layout {
+    grid-template-columns: 1fr;
+  }
+
+}

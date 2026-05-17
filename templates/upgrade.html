@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upgrade Your Report | Alpine Retirement Consulting</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='upgrade.css') }}">
+</head>
+<body class="upgrade-page">
+  <header class="upgrade-header">
+    <p class="eyebrow">5 Things™ Allocator</p>
+    <h1>Your free report is ready</h1>
+    <p class="lead" id="upgrade-status">
+      Choose how you would like to continue—self-serve reports or an advisor-led probability review.
+    </p>
+    <a class="text-link" href="{{ url_for('allocator') }}">← Back to allocator</a>
+  </header>
+
+  <section class="comparison-panel">
+    <h2>Fixed withdrawal rate vs Monte Carlo</h2>
+    <div class="comparison-body">{{ comparison_disclosure|safe }}</div>
+  </section>
+
+  <section class="options-grid">
+    <article class="option-card option-free">
+      <p class="option-tag">Current</p>
+      <h2>Free report</h2>
+      <p class="price">$0</p>
+      <p class="option-summary">
+        Five paycut risks, charts, narrative guidance, and assumptions using safe withdrawal-rate methodology.
+      </p>
+      <div class="option-disclosure">
+        <h3>Methodology disclosure</h3>
+        <p>{{ option_disclosures.free }}</p>
+      </div>
+      <a class="btn btn-secondary" href="{{ url_for('allocator') }}">Stay with free report</a>
+    </article>
+
+    <article class="option-card option-featured">
+      <p class="option-tag">Popular</p>
+      <h2>Premium report</h2>
+      <p class="price">$99</p>
+      <p class="option-summary">
+        Everything in the free report plus tier-matched strategies for each paycut risk (grounded in
+        academic research), withdrawal-rate comparisons, and solutions—including links for next steps
+        where relevant.
+      </p>
+      <div class="option-disclosure">
+        <h3>Methodology disclosure</h3>
+        <p>{{ option_disclosures.options }}</p>
+      </div>
+      <button type="button" class="btn btn-primary" data-tier="options">
+        Download premium report — $99
+      </button>
+    </article>
+
+    <article class="option-card option-advisor">
+      <p class="option-tag">Advisor-driven</p>
+      <h2>Advanced- Probability review</h2>
+      <p class="price">$999</p>
+      <p class="option-summary">
+        Everything in the free report plus a Monte Carlo probability study with success rates and
+        ending-wealth percentiles across simulated market paths, and consultation with an advisor.
+      </p>
+      <div class="option-disclosure">
+        <h3>How this works</h3>
+        <p>{{ option_disclosures.advisor }}</p>
+      </div>
+      <a
+        class="btn btn-primary"
+        href="{{ appointment_url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Schedule a consultation
+      </a>
+    </article>
+  </section>
+
+  <footer class="upgrade-footer">
+    <p>
+      Reports are for educational planning purposes only and are not investment advice.
+      The premium report is a self-serve PDF using your last export. The advanced probability review
+      is advisor-led—schedule a consultation rather than downloading a Monte Carlo report here.
+      Payment processing for the premium report can be connected separately.
+    </p>
+  </footer>
+
+  <script>
+    window.__UPGRADE_CACHE_ID__ = {{ cache_id|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='upgrade.js') }}"></script>
+</body>
+</html>

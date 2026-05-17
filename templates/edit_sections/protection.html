@@ -1,0 +1,17 @@
+<div>
+    <h3>Protection</h3>
+
+    <div class="form-row">
+        <label>Life Insurance Coverage ($)</label>
+        <input type="number" step="0.01" name="life_insurance"
+               value="{{ data.get('life_insurance', '') }}"
+               onchange="currentData.life_insurance = this.value;">
+    </div>
+
+    <div class="form-row">
+        <label>Long-Term Care Coverage ($)</label>
+        <input type="number" step="0.01" name="ltc_coverage"
+               value="{{ data.get('ltc_coverage', '') }}"
+               onchange="currentData.ltc_coverage = this.value;">
+    </div>
+</div>

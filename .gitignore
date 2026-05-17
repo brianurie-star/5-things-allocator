@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+venv/
+.venv/
+env/
+
+# Local / secrets
+.env
+.env.*
+*.pem
+
+# Export session cache (ephemeral)
+.export_cache/
+
+# IDE / OS
+.cursor/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build / local
+*.log
+terminals/
+tmp_*.pdf

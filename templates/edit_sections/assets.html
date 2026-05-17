@@ -1,0 +1,21 @@
+<div>
+    <h3>Assets & Risk Profile</h3>
+
+    <div class="form-row">
+        <label>Risk Profile</label>
+        <select name="risk_profile"
+                onchange="currentProfile = this.value; currentData.risk_profile = this.value; updateCharts();">
+            <option {% if data.get('risk_profile') == 'Aggressive' %}selected{% endif %}>Aggressive</option>
+            <option {% if data.get('risk_profile') == 'Growth' %}selected{% endif %}>Growth</option>
+            <option {% if data.get('risk_profile') == 'Growth With Income' %}selected{% endif %}>Growth With Income</option>
+            <option {% if data.get('risk_profile') == 'Intermediate Growth' %}selected{% endif %}>Intermediate Growth</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label>Total Assets ($)</label>
+        <input type="number" step="0.01" name="total_assets"
+               value="{{ data.get('total_assets', '') }}"
+               onchange="currentData.total_assets = this.value;">
+    </div>
+</div>

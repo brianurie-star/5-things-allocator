@@ -1,0 +1,24 @@
+<div>
+    <h3>Cash Flow</h3>
+
+    <div class="form-row">
+        <label>Guaranteed Income ($)</label>
+        <input type="number" step="0.01" name="guaranteed_income"
+               value="{{ data.get('guaranteed_income', '') }}"
+               onchange="currentData.guaranteed_income = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>Expenses ($)</label>
+        <input type="number" step="0.01" name="expenses"
+               value="{{ data.get('expenses', '') }}"
+               onchange="currentData.expenses = this.value; updateCharts();">
+    </div>
+
+    <div class="form-row">
+        <label>% Allocated to Guaranteed Income</label>
+        <input type="number" step="0.01" name="guaranteed_pct"
+               value="{{ data.get('guaranteed_pct', '') }}"
+               onchange="currentData.guaranteed_pct = this.value; updateCharts();">
+    </div>
+</div>

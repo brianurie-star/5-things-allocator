@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ready to Retire? | Alpine Retirement Consulting</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body class="home-page">
+  <section class="home-hero" aria-label="Welcome">
+    <div class="hero-stage">
+      <div class="hero-backdrop" role="img" aria-label="Snow-capped mountains and evergreen forest"></div>
+      <header class="site-header site-header--overlay site-header--no-logo">
+        <nav class="site-nav" aria-label="Main">
+          <a href="{{ url_for('home') }}">Home</a>
+          <a href="#retirement-decisions">Decisions</a>
+          <a href="#five-things">5 Things</a>
+          <a href="#advisor">About</a>
+        </nav>
+        <a class="btn btn-primary btn-nav" href="{{ url_for('allocator') }}">Open 5 Things™ Allocator</a>
+      </header>
+      <div class="hero-overlay-copy">
+        <h2>The Five Things That Can Cause a Paycut</h2>
+        <p>
+          Each item below is a decision point—or a decision you may be forced into if the risk shows up.
+          The allocator tests how your current choices hold up, with charts and narrative guidance in your report.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="five-things" class="section five-things">
+      <ol class="things-grid">
+        <li class="thing-card">
+          <span class="thing-num">1</span>
+          <h3>Relying on the <em>Flaw</em> of Averages</h3>
+          <p>
+            The sequence of returns—not just the average—can determine whether money lasts 24 years or 30+,
+            even with identical withdrawals and the same arithmetic mean.
+          </p>
+        </li>
+        <li class="thing-card">
+          <span class="thing-num">2</span>
+          <h3>Living Too Long</h3>
+          <p>
+            Outliving your income plan is one of the most common paycuts. Inflation, taxes, and a long
+            retirement can erode purchasing power when predictable income does not keep pace.
+          </p>
+        </li>
+        <li class="thing-card">
+          <span class="thing-num">3</span>
+          <h3>Dying Too Soon</h3>
+          <p>
+            A premature death can cut income for a surviving spouse or household when assets and protection
+            are not aligned to replace lost earnings and benefits.
+          </p>
+        </li>
+        <li class="thing-card">
+          <span class="thing-num">4</span>
+          <h3>Underestimating Care Costs</h3>
+          <p>
+            Long-term care is often under-modeled until it is needed. A sustained care event can redirect
+            cash flow away from lifestyle spending—functionally reducing retirement pay.
+          </p>
+        </li>
+        <li class="thing-card">
+          <span class="thing-num">5</span>
+          <h3>Getting Sued</h3>
+          <p>
+            Liability awards above auto, home, and umbrella coverage can force assets to be used—
+            cutting what your plan can otherwise provide for income and security.
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="retirement-decisions" class="section decisions">
+      <div class="section-intro">
+        <h2>Decisions at Retirement</h2>
+        <p>
+          A successful retirement plan is less about picking one product and more about coordinating
+          decisions made at—and after—the retirement date. These are the kinds of choices the 5 Things
+          analysis and a full planning conversation are designed to clarify.
+        </p>
+      </div>
+      <ul class="decisions-grid">
+        <li>
+          <strong>When and how to retire</strong>
+          <span>Timing, income start dates, and whether the household can sustain the lifestyle it expects.</span>
+        </li>
+        <li>
+          <strong>How to turn assets into income</strong>
+          <span>Withdrawal rates, guaranteed vs. market-based income, and the flaw of relying on averages alone.</span>
+        </li>
+        <li>
+          <strong>Which risks to insure vs. self-fund</strong>
+          <span>Long-term care, survivor needs, liability, and whether assets can absorb a shock without a paycut.</span>
+        </li>
+        <li>
+          <strong>Social Security &amp; Medicare</strong>
+          <span>Claiming strategies, health coverage, and institutional rules that affect cash flow.</span>
+        </li>
+        <li>
+          <strong>Qualified &amp; non-qualified assets</strong>
+          <span>Which accounts to draw from, in what order, and with what tax consequences.</span>
+        </li>
+        <li>
+          <strong>Real estate &amp; the full balance sheet</strong>
+          <span>Whether home equity belongs in the plan—and when it should be used relative to investments.</span>
+        </li>
+        <li>
+          <strong>Estate &amp; tax coordination</strong>
+          <span>Legacy goals, beneficiary alignment, and keeping more of what the plan produces.</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="advisor" class="section advisor">
+      <div class="advisor-layout">
+        <div class="advisor-copy">
+          <p class="eyebrow">Your Retirement Plan Advisor</p>
+          <h2>Brian Urie, MS, CFP<sup>®</sup>, CPFA<sup>®</sup></h2>
+          <p class="advisor-role">Retirement Plan Advisor · Mountain America Investment Services</p>
+          <p>
+            Brian helps households and business owners across the Intermountain West work through
+            <strong>decisions at retirement</strong>—not just account balances. His focus includes company
+            retirement plans, professional offices, and the trades, informed by early experience as an
+            apprentice carpenter and more than 25 years as a financial advisor.
+          </p>
+          <p>
+            He is especially focused on how income, insurance, taxes, and real estate fit together at the
+            moment clients transition from accumulation to distribution.
+          </p>
+          <ul class="credential-list">
+            <li><strong>CFP<sup>®</sup></strong> — Certified Financial Planner</li>
+            <li><strong>CPFA<sup>®</sup></strong> — Certified Plan Fiduciary Advisor</li>
+            <li><strong>Master of Science</strong> — Personal Financial Planning, College for Financial Planning</li>
+          </ul>
+          <p class="advisor-note">
+            Brian has spoken at the BYU Marriott School Grant Taggart Symposium, continuing education
+            programs for advisors and Utah CPAs, and the radio program <em>Wills, Trusts, and More</em>.
+            Recognized nationally early in his career, including Rookie of the Year (1999) and Third Year
+            Challenge Qualifier.
+          </p>
+          <div class="advisor-links">
+            <a class="btn btn-secondary" href="https://www.macu.com/burie" target="_blank" rel="noopener noreferrer">
+              Read Full Bio
+            </a>
+            <a class="btn btn-primary" href="{{ url_for('allocator') }}">Run Your 5 Things Report</a>
+          </div>
+        </div>
+        <aside class="advisor-aside">
+          <div class="aside-card wharton-card">
+            <p class="wharton-eyebrow">University of Pennsylvania · Wharton School</p>
+            <h3>Certificate in Retirement Planning</h3>
+            <p class="wharton-meta">Week-long intensive · 50 hours of study · 10 Wharton faculty instructors</p>
+            <p>
+              Brian completed Wharton’s retirement planning certificate—a concentrated program designed
+              for advisors who guide clients through the decisions that matter at retirement.
+            </p>
+            <p class="wharton-topics-label">Curriculum included:</p>
+            <ul class="wharton-topics">
+              <li>Identifying, Mitigating and Insuring Retirement Risks</li>
+              <li>Qualified and Non-Qualified Plans and their Roles in Retirement Planning</li>
+              <li>Medicare and Social Security — Dealing with Institutional Risk</li>
+              <li>Asset Allocation and Diversification</li>
+              <li>Real Estate in the Retirement Portfolio</li>
+              <li>Estate Planning and Tax Issues in Retirement</li>
+            </ul>
+          </div>
+          <div class="aside-card">
+            <h3>Specialized Training &amp; Focus</h3>
+            <ul>
+              <li>Retirement decisions at the point of transition</li>
+              <li>Company retirement plans &amp; fiduciary guidance</li>
+              <li>Business owners, professional practices &amp; the trades</li>
+              <li>Income, insurance, tax, and real estate coordination</li>
+            </ul>
+          </div>
+          <div class="aside-card aside-card-muted">
+            <h3>Education</h3>
+            <p>Weber State University — Professional Sales</p>
+            <p>College for Financial Planning — Master of Science in Personal Financial Planning</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section cta-band">
+      <h2>Clarify your retirement decisions</h2>
+      <p>
+        Enter your household information, calculate results, and export a personalized PDF that
+        stress-tests the five paycut risks behind your retirement income decisions.
+      </p>
+      <a class="btn btn-primary btn-lg" href="{{ url_for('allocator') }}">Open 5 Things™ Allocator</a>
+    </section>
+  </main>
+
+  <footer class="home-footer">
+    <p>
+      For educational planning purposes. Securities and advisory services offered through LPL Financial,
+      a registered investment advisor and broker-dealer (member FINRA/SIPC). Insurance offered through
+      LPL or its licensed affiliates. Mountain America Credit Union and Mountain America Investment
+      Services are not registered broker-dealers or investment advisors.
+      <a href="https://www.macu.com/burie" target="_blank" rel="noopener noreferrer">Advisor disclosures</a>
+    </p>
+  </footer>
+</body>
+</html>

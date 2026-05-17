@@ -1,0 +1,35 @@
+<div class="section-title mb-3">Assets</div>
+
+<div class="row mb-2">
+    <div class="col-md-4">
+        <label>Retirement Assets</label>
+        <input type="text" class="form-control" name="retirement_assets"
+               value="{{ '%.0f'|format(data.retirement_assets) }}">
+    </div>
+    <div class="col-md-4">
+        <label>Non-Retirement Assets</label>
+        <input type="text" class="form-control" name="non_retirement_assets"
+               value="{{ '%.0f'|format(data.non_retirement_assets) }}">
+    </div>
+    <div class="col-md-4">
+        <label>% Allocated to Guaranteed Income</label>
+        <input type="number" class="form-control" name="guaranteed_pct"
+               value="{{ '%.0f'|format(data.guaranteed_pct * 100) }}">
+    </div>
+</div>
+
+<hr class="my-4">
+
+<div class="section-title mb-3">Risk Profile</div>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <label>Select Risk Profile</label>
+        <select class="form-select" name="risk_profile">
+            <option value="Growth" {% if data.risk_profile == "Growth" %}selected{% endif %}>Growth</option>
+            <option value="Aggressive" {% if data.risk_profile == "Aggressive" %}selected{% endif %}>Aggressive</option>
+            <option value="Growth With Income" {% if data.risk_profile == "Growth With Income" %}selected{% endif %}>Growth With Income</option>
+            <option value="Intermediate Growth" {% if data.risk_profile == "Intermediate Growth" %}selected{% endif %}>Intermediate Growth</option>
+        </select>
+    </div>
+</div>
