@@ -9,7 +9,7 @@ async function downloadTierReport(tier, button) {
   const cacheId = getCacheId();
   if (!cacheId) {
     alert(
-      "Export session not found. Please return to the allocator, calculate results, and export your free report again."
+      "Export session not found. Please return to the allocator, calculate results, and export your complimentary report again."
     );
     return;
   }
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("upgrade-status");
   if (!cacheId && status) {
     status.textContent =
-      "Export session not found. Return to the allocator and export your free report to unlock upgrade options.";
+      "Export session not found. Return to the allocator and export your complimentary report to unlock upgrade options.";
   }
 
   document.querySelectorAll("[data-tier]").forEach((button) => {

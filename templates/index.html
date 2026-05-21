@@ -255,24 +255,44 @@
         </div>
         <div class="topbar-actions">
           <div class="balance-sheet-segment" role="group" aria-label="Balance sheet mode">
-            <button
-              id="balanceSheetPartial"
-              class="balance-sheet-option is-active"
-              type="button"
-              onclick="setBalanceSheetMode('partial')"
-              aria-pressed="true"
-            >
-              Partial Balance Sheet
-            </button>
-            <button
-              id="balanceSheetFull"
-              class="balance-sheet-option"
-              type="button"
-              onclick="setBalanceSheetMode('full')"
-              aria-pressed="false"
-            >
-              Full Balance Sheet
-            </button>
+            <div class="balance-sheet-option-wrap">
+              <button
+                id="balanceSheetPartial"
+                class="balance-sheet-option is-active"
+                type="button"
+                onclick="setBalanceSheetMode('partial')"
+                aria-pressed="true"
+                aria-describedby="balanceSheetPartialTip"
+              >
+                Partial Balance Sheet
+              </button>
+              <div
+                id="balanceSheetPartialTip"
+                class="balance-sheet-tip"
+                role="tooltip"
+              >
+                Partial balance sheet (financial assets only)
+              </div>
+            </div>
+            <div class="balance-sheet-option-wrap">
+              <button
+                id="balanceSheetFull"
+                class="balance-sheet-option"
+                type="button"
+                onclick="setBalanceSheetMode('full')"
+                aria-pressed="false"
+                aria-describedby="balanceSheetFullTip"
+              >
+                Full Balance Sheet
+              </button>
+              <div
+                id="balanceSheetFullTip"
+                class="balance-sheet-tip"
+                role="tooltip"
+              >
+                Full balance sheet (home equity included in investable assets)
+              </div>
+            </div>
           </div>
           <button onclick="exportPdf()">Export PDF</button>
           <button onclick="showEntry()">Back to Data Entry</button>

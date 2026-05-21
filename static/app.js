@@ -5,6 +5,12 @@ let lastPayload = null;
 let lastResults = null;
 let balanceSheetMode = "partial";
 
+/** Matches report.py build_assumption_groups balance_sheet labels */
+const BALANCE_SHEET_TIPS = {
+  partial: "Partial balance sheet (financial assets only)",
+  full: "Full balance sheet (home equity included in investable assets)"
+};
+
 Chart.register(ChartDataLabels);
 
 /**
@@ -15,20 +21,27 @@ Chart.register(ChartDataLabels);
  * - Radius: PIE_RADIUS_PCT vs PIE_RADIUS_LARGE_LABEL_PCT (profile-style % pies use "large").
  */
 const PIE_ASPECT_RATIO = 1;
-const PIE_RADIUS_PCT = "76%";
-const PIE_RADIUS_LARGE_LABEL_PCT = "68%";
+const PIE_RADIUS_PCT = "82%";
+const PIE_RADIUS_LARGE_LABEL_PCT = "74%";
 /** Same pixel gutter on top/right/bottom/left — room for outside labels without shifting the pie arc */
-const PIE_OUTSIDE_LABEL_GUTTER = { default: 54, largeLabels: 58 };
-const PIE_DATALABEL_OFFSET = { default: 16, largeLabels: 18 };
+const PIE_OUTSIDE_LABEL_GUTTER = { default: 48, largeLabels: 52 };
+const PIE_DATALABEL_OFFSET = { default: 14, largeLabels: 16 };
 /** PDF/PNG: square host width (px) for consistent export bitmaps */
-const PIE_EXPORT_SNAPSHOT_SIDE_PX = 400;
-const PIE_TITLE_FONT = { size: 16, weight: "600" };
-const PIE_DATALABEL_FONT = {
-  family: "Inter, Segoe UI, Helvetica, Arial, sans-serif",
-  size: 12,
+const PIE_EXPORT_SNAPSHOT_SIDE_PX = 520;
+/** Export bitmap density (Chart.js devicePixelRatio during PDF capture) */
+const CHART_EXPORT_DEVICE_PIXEL_RATIO = 2.5;
+/** Larger type for PDF readers (60+); scales cleanly into report tiles */
+const REPORT_CHART_FONT = "Helvetica, Arial, sans-serif";
+const REPORT_CHART_TITLE_FONT = { family: REPORT_CHART_FONT, size: 17, weight: "bold" };
+const REPORT_CHART_LABEL_FONT = {
+  family: REPORT_CHART_FONT,
+  size: 15,
   weight: "600",
-  lineHeight: 1.35
+  lineHeight: 1.3
 };
+const REPORT_CHART_TICK_FONT = { family: REPORT_CHART_FONT, size: 14, weight: "600" };
+const PIE_TITLE_FONT = REPORT_CHART_TITLE_FONT;
+const PIE_DATALABEL_FONT = REPORT_CHART_LABEL_FONT;
 
 const percentFields = [
   "guaranteed_income_allocation",
@@ -288,6 +301,70 @@ function snapPieHostsForExport(sidePx) {
   };
 }
 
+const BAR_EXPORT_HEIGHT_PX = 460;
+const OUTCOMES_EXPORT_HEIGHT_PX = 480;
+
+/** Full-width chart hosts for outcomes and bar charts before PDF capture. */
+function snapWideChartHostsForExport(widthPx) {
+  const hosts = document.querySelectorAll(
+    "#results-screen .outcomes-chart-host, #results-screen .bar-chart-host"
+  );
+  const snapshots = [];
+
+  hosts.forEach((host) => {
+    const canvas = host.querySelector("canvas");
+    const isOutcomes = host.classList.contains("outcomes-chart-host");
+    const heightPx = isOutcomes ? OUTCOMES_EXPORT_HEIGHT_PX : BAR_EXPORT_HEIGHT_PX;
+    snapshots.push({
+      host,
+      canvas,
+      prevHostStyle: host.getAttribute("style"),
+      prevCanvasStyle: canvas?.getAttribute("style") ?? null
+    });
+    host.style.boxSizing = "border-box";
+    host.style.width = `${widthPx}px`;
+    host.style.maxWidth = "100%";
+    host.style.minHeight = `${heightPx}px`;
+    host.style.height = `${heightPx}px`;
+    host.style.marginLeft = "auto";
+    host.style.marginRight = "auto";
+    host.style.display = "flex";
+    host.style.justifyContent = "center";
+    host.style.alignItems = "center";
+    if (canvas) {
+      canvas.style.width = "100%";
+      canvas.style.height = `${heightPx - 36}px`;
+      canvas.style.minHeight = `${heightPx - 36}px`;
+      canvas.style.maxWidth = "100%";
+    }
+  });
+
+  return function restoreWideChartHostSnapshots() {
+    snapshots.forEach(({ host, canvas, prevHostStyle, prevCanvasStyle }) => {
+      if (prevHostStyle === null || prevHostStyle === "") host.removeAttribute("style");
+      else host.setAttribute("style", prevHostStyle);
+      if (canvas) {
+        if (prevCanvasStyle === null || prevCanvasStyle === "") canvas.removeAttribute("style");
+        else canvas.setAttribute("style", prevCanvasStyle);
+      }
+    });
+  };
+}
+
+function resolveReportExportWidthPx() {
+  const ref =
+    document.querySelector("#results-screen .outcomes-chart-card") ||
+    document.querySelector("#results-screen .chart-grid") ||
+    getEl("results-screen");
+  if (ref) {
+    const w = Math.round(ref.getBoundingClientRect().width);
+    if (Number.isFinite(w) && w >= 520 && w <= 900) {
+      return w;
+    }
+  }
+  return 720;
+}
+
 /** Match Investment Strategy column width (profile/allocation hosts) so every pie PNG shares that geometry before PDF capture. */
 function resolvePieExportSidePx() {
   const refCanvas = getEl("profileChart") || getEl("allocationChart");
@@ -324,7 +401,7 @@ function basePieOptions(title, largeLabels = false, isPercent = false) {
       title: {
         display: true,
         text: title,
-        padding: { top: 0, bottom: 14 },
+        padding: { top: 0, bottom: 10 },
         font: PIE_TITLE_FONT
       },
       tooltip: {
@@ -413,14 +490,14 @@ function makeAnnualCoverageChart(id, labels, data, title) {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 0 },
-      layout: { padding: { top: 18, right: 18, bottom: 10, left: 18 } },
+      layout: { padding: { top: 28, right: 12, bottom: 8, left: 12 } },
       plugins: {
         legend: { display: false },
         title: {
           display: true,
           text: title,
-          padding: { bottom: 18 },
-          font: { size: 16, weight: "600" }
+          padding: { top: 4, bottom: 22 },
+          font: REPORT_CHART_TITLE_FONT
         },
         tooltip: {
           callbacks: {
@@ -438,17 +515,19 @@ function makeAnnualCoverageChart(id, labels, data, title) {
             return `${context.chart.data.labels[context.dataIndex]}\n${currency(value)}`;
           },
           color: "#333",
-          font: { size: 11, weight: "600" }
+          font: REPORT_CHART_LABEL_FONT
         }
       },
       scales: {
         x: {
-          grid: { display: false }
+          grid: { display: false },
+          ticks: { font: REPORT_CHART_TICK_FONT }
         },
         y: {
           min: yMin,
           max: yMax,
           ticks: {
+            font: REPORT_CHART_TICK_FONT,
             callback: function (value) {
               return currency(value);
             }
@@ -460,9 +539,58 @@ function makeAnnualCoverageChart(id, labels, data, title) {
   });
 }
 
+/** Percent labels on sample-range bars (allocator + PDF export share makeOutcomeRangeChart). */
+const OUTCOME_RANGE_LOW_DATALABELS = {
+  display: true,
+  clip: false,
+  formatter: function (value) {
+    return percent(Array.isArray(value) ? value[0] : value);
+  },
+  anchor: "start",
+  align: "right",
+  offset: 4,
+  color: "#ffffff",
+  font: { ...REPORT_CHART_LABEL_FONT, weight: "bold" }
+};
+
+const OUTCOME_RANGE_HIGH_DATALABELS = {
+  display: true,
+  clip: false,
+  formatter: function (value) {
+    return percent(Array.isArray(value) ? value[1] : value);
+  },
+  anchor: "end",
+  align: "left",
+  offset: 4,
+  color: "#003300",
+  font: REPORT_CHART_LABEL_FONT
+};
+
+const OUTCOME_RANGE_MEAN_DATALABELS = {
+  display: true,
+  clip: false,
+  formatter: function (value) {
+    return percent(value.x);
+  },
+  anchor: "center",
+  align: "top",
+  offset: 2,
+  color: "#1e293b",
+  backgroundColor: "rgba(255, 255, 255, 0.9)",
+  borderRadius: 3,
+  padding: { top: 2, bottom: 2, left: 4, right: 4 },
+  font: REPORT_CHART_LABEL_FONT
+};
+
 function makeOutcomeRangeChart(map, id, mean, low98, high98, low68, high68, title = "Sample Range of Investment Outcomes") {
   const canvas = getEl(id);
   if (!canvas) return;
+
+  const meanVal = Number(mean);
+  const vals = [low98, high98, low68, high68, meanVal].map((v) => Number(v));
+  const xPad = 3;
+  const xMin = Math.floor(Math.min(...vals) - xPad);
+  const xMax = Math.ceil(Math.max(...vals) + xPad);
 
   map[id] = new Chart(canvas, {
     type: "bar",
@@ -471,19 +599,35 @@ function makeOutcomeRangeChart(map, id, mean, low98, high98, low68, high68, titl
       datasets: [
         {
           label: "Downside",
-          data: [[low98, mean], [low68, mean]],
+          data: [[low98, meanVal], [low68, meanVal]],
           backgroundColor: "#c00000",
-          barThickness: 28,
-          categoryPercentage: 0.7,
-          barPercentage: 0.95
+          barThickness: "flex",
+          maxBarThickness: 88,
+          categoryPercentage: 0.78,
+          barPercentage: 0.92,
+          datalabels: OUTCOME_RANGE_LOW_DATALABELS
         },
         {
           label: "Upside",
-          data: [[mean, high98], [mean, high68]],
+          data: [[meanVal, high98], [meanVal, high68]],
           backgroundColor: "#00b050",
-          barThickness: 28,
-          categoryPercentage: 0.7,
-          barPercentage: 0.95
+          barThickness: "flex",
+          maxBarThickness: 88,
+          categoryPercentage: 0.78,
+          barPercentage: 0.92,
+          datalabels: OUTCOME_RANGE_HIGH_DATALABELS
+        },
+        {
+          type: "scatter",
+          label: "Mean",
+          data: [
+            { x: meanVal, y: 0 },
+            { x: meanVal, y: 1 }
+          ],
+          pointRadius: 0,
+          pointHitRadius: 0,
+          borderWidth: 0,
+          datalabels: OUTCOME_RANGE_MEAN_DATALABELS
         }
       ]
     },
@@ -491,38 +635,36 @@ function makeOutcomeRangeChart(map, id, mean, low98, high98, low68, high68, titl
       indexAxis: "y",
       responsive: true,
       maintainAspectRatio: false,
-      layout: { padding: { top: 18, right: 18, bottom: 10, left: 18 } },
+      animation: { duration: 0 },
+      layout: { padding: { top: 40, right: 52, bottom: 10, left: 28 } },
       plugins: {
         legend: { display: false },
         title: {
           display: true,
           text: title,
-          padding: { bottom: 18 },
-          font: { size: 16, weight: "600" }
+          position: "top",
+          align: "center",
+          padding: { top: 4, bottom: 28 },
+          font: REPORT_CHART_TITLE_FONT
         },
         tooltip: {
           callbacks: {
             label: function (context) {
               const raw = context.raw;
+              if (context.dataset.label === "Mean") {
+                return `Mean: ${percent(raw.x)}`;
+              }
               return `${context.dataset.label}: ${percent(raw[0])} to ${percent(raw[1])}`;
             }
           }
-        },
-        datalabels: {
-          color: function (context) {
-            return context.dataset.label === "Downside" ? "#ffffff" : "#003300";
-          },
-          formatter: function (value, context) {
-            return context.dataset.label === "Downside" ? percent(value[0]) : percent(value[1]);
-          },
-          anchor: "center",
-          align: "center",
-          font: { size: 11, weight: "700" }
         }
       },
       scales: {
         x: {
+          min: xMin,
+          max: xMax,
           ticks: {
+            font: REPORT_CHART_TICK_FONT,
             callback: function (value) {
               return `${value}%`;
             }
@@ -530,6 +672,11 @@ function makeOutcomeRangeChart(map, id, mean, low98, high98, low68, high68, titl
           grid: { color: "rgba(15, 23, 42, 0.08)" }
         },
         y: {
+          ticks: {
+            font: REPORT_CHART_LABEL_FONT,
+            padding: 10,
+            crossAlign: "far"
+          },
           grid: { display: false }
         }
       }
@@ -557,14 +704,14 @@ function makeSelfInsuranceChart(id, earlyDeath, ltc, lawsuit) {
       responsive: true,
       maintainAspectRatio: false,
       animation: { duration: 0 },
-      layout: { padding: { top: 18, right: 18, bottom: 10, left: 18 } },
+      layout: { padding: { top: 28, right: 12, bottom: 8, left: 12 } },
       plugins: {
         legend: { display: false },
         title: {
           display: true,
           text: "Self-Insurance Need by Risk",
-          padding: { bottom: 18 },
-          font: { size: 16, weight: "600" }
+          padding: { top: 4, bottom: 22 },
+          font: REPORT_CHART_TITLE_FONT
         },
         tooltip: {
           callbacks: {
@@ -580,17 +727,19 @@ function makeSelfInsuranceChart(id, earlyDeath, ltc, lawsuit) {
             return `${context.chart.data.labels[context.dataIndex]}\n${currency(value)}`;
           },
           color: "#333",
-          font: { size: 11, weight: "600" }
+          font: REPORT_CHART_LABEL_FONT
         }
       },
       scales: {
         x: {
-          grid: { display: false }
+          grid: { display: false },
+          ticks: { font: REPORT_CHART_TICK_FONT }
         },
         y: {
           min: 0,
           max: yMax,
           ticks: {
+            font: REPORT_CHART_TICK_FONT,
             callback: function (value) {
               return currency(value);
             }
@@ -600,6 +749,13 @@ function makeSelfInsuranceChart(id, earlyDeath, ltc, lawsuit) {
       }
     }
   });
+}
+
+function initBalanceSheetTooltips() {
+  const partialTip = getEl("balanceSheetPartialTip");
+  const fullTip = getEl("balanceSheetFullTip");
+  if (partialTip) partialTip.textContent = BALANCE_SHEET_TIPS.partial;
+  if (fullTip) fullTip.textContent = BALANCE_SHEET_TIPS.full;
 }
 
 function updateBalanceSheetSelectorUI() {
@@ -794,7 +950,7 @@ function renderResults(payload, results) {
       results.assets_at_risk_early_death,
       Math.max(results.investable_assets - results.assets_at_risk_early_death, 0)
     ],
-    "Impact of Early Death in Retirement",
+    "Potential Impact of Early Death in Retirement",
     false,
     ["#c00000", "#00b050"]
   );
@@ -807,7 +963,7 @@ function renderResults(payload, results) {
       results.assets_at_risk_ltc,
       Math.max(results.investable_assets - results.assets_at_risk_ltc, 0)
     ],
-    `Impact of ${ltcYears}-Year Long Term Care Stay`,
+    `Potential Impact of ${ltcYears}-Year Long Term Care Stay`,
     false,
     ["#c00000", "#00b050"]
   );
@@ -820,7 +976,7 @@ function renderResults(payload, results) {
       results.net_at_risk_lawsuit,
       Math.max(results.investable_assets - results.net_at_risk_lawsuit, 0)
     ],
-    `Impact of ${currency(payload.lawsuit_award)} Lawsuit on Investable Assets`,
+    `Potential Impact of ${currency(payload.lawsuit_award)} Lawsuit on Investable Assets`,
     false,
     ["#c00000", "#00b050"]
   );
@@ -830,7 +986,7 @@ function renderResults(payload, results) {
     "lawsuitIncomeChart",
     ["Income Vulnerable to Lawsuit", "The Rest"],
     [lawsuitIncomeAtRisk, protectedIncomeRest],
-    `Impact of ${currency(payload.lawsuit_award)} on Income`,
+    `Potential Impact of ${currency(payload.lawsuit_award)} on Income`,
     false,
     ["#ed7d31", "#cfcfcf"]
   );
@@ -912,10 +1068,18 @@ function getCurrentInputsForExport() {
 function canvasToDataUrl(id) {
   const chart = chartRefs[id];
   if (chart && typeof chart.toBase64Image === "function") {
+    const prevDpr = chart.options.devicePixelRatio;
     try {
+      chart.options.devicePixelRatio = CHART_EXPORT_DEVICE_PIXEL_RATIO;
+      chart.resize();
+      chart.update("none");
       return chart.toBase64Image("image/png", 1.0);
     } catch (e) {
       console.error(`Could not export chart ${id}:`, e);
+    } finally {
+      chart.options.devicePixelRatio = prevDpr;
+      chart.resize();
+      chart.update("none");
     }
   }
 
@@ -955,6 +1119,7 @@ async function exportPdf() {
   const inputs = getCurrentInputsForExport();
   const restoreTabs = prepareChartsForExport();
   let restorePieSnap = () => {};
+  let restoreWideSnap = () => {};
 
   if (lastPayload && lastResults) {
     renderResults(lastPayload, lastResults);
@@ -962,6 +1127,7 @@ async function exportPdf() {
 
   resizeAllCharts(chartRefs);
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  restoreWideSnap = snapWideChartHostsForExport(resolveReportExportWidthPx());
   restorePieSnap = snapPieHostsForExport(resolvePieExportSidePx());
   resizeAllCharts(chartRefs);
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -1022,6 +1188,7 @@ async function exportPdf() {
     alert(`PDF export failed:\n\n${err.message}`);
   } finally {
     restorePieSnap();
+    restoreWideSnap();
     restoreTabs();
     if (lastPayload && lastResults) {
       resizeAllCharts(chartRefs);
@@ -1031,6 +1198,7 @@ async function exportPdf() {
 
 document.addEventListener("DOMContentLoaded", function () {
   renderEntryProfilePreview();
+  initBalanceSheetTooltips();
   updateBalanceSheetSelectorUI();
   getEl("entryAdvancedDetails")?.removeAttribute("open");
 

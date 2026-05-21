@@ -311,11 +311,13 @@ NARRATIVE_COPY = {
             "quote": "Cumulative paycut risk can exceed what the plan can self-fund.",
         },
     },
+    "closing_bridge_free": (
+        "Observations above show where your plan appears on track, at risk, or under higher pressure "
+        "from the inputs and charts in this report."
+    ),
     "closing_bridge": (
-        "This report highlights the five things that can cause a retirement paycut—and how your plan responds "
-        "under each scenario.<br/><br/>"
-        "The next step is understanding how these elements can be coordinated to improve stability, protection, "
-        "and income durability over time."
+        "Educational options and probability outputs, where shown, are for context—not personalized "
+        "advice or recommendations."
     ),
     "balance_sheet_planning_note": (
         "<b>Planning note:</b> Partial and full balance sheet views in the allocator let you include accessible "
@@ -327,3 +329,88 @@ NARRATIVE_COPY = {
 
 def get_narrative_block(section_key, tier):
     return NARRATIVE_COPY.get(section_key, {}).get(tier, {})
+
+
+def _money(v):
+    return f"${float(v or 0):,.0f}"
+
+
+def client_context_paragraph(section_key, data):
+    """One client-specific sentence appended to tier observations."""
+    investable = _f(data, "investable_assets")
+    if section_key == "flaw_of_averages":
+        unprotected = _f(data, "stock_assets") + _f(data, "bond_assets")
+        pct = (unprotected / investable * 100) if investable > 0 else 0
+        g = _f(data, "guaranteed_income_allocation")
+        guaranteed_pct = g * 100 if abs(g) <= 1 else g
+        return (
+            f"In your inputs, <b>{pct:.0f}%</b> of investable assets are unprotected and "
+            f"<b>{guaranteed_pct:.0f}%</b> is allocated to guaranteed income—key drivers of "
+            "sequence sensitivity."
+        )
+
+    if section_key == "living_too_long":
+        income = _monthly_income_for_mode(data)
+        expenses = _f(data, "monthly_expenses")
+        gap = income - expenses
+        protected_annual = _f(data, "protected_monthly_income") * 12
+        basic_annual = _f(data, "monthly_living_expenses") * 12
+        if gap >= 0:
+            return (
+                f"Your inputs show <b>{_money(gap)}</b> monthly surplus and protected income of "
+                f"<b>{_money(protected_annual)}</b>/year vs basic expenses of "
+                f"<b>{_money(basic_annual)}</b>/year."
+            )
+        return (
+            f"Your inputs show a <b>{_money(abs(gap))}</b> monthly gap and protected income of "
+            f"<b>{_money(protected_annual)}</b>/year vs basic expenses of "
+            f"<b>{_money(basic_annual)}</b>/year."
+        )
+
+    if section_key == "dying_too_soon":
+        at_risk = _f(data, "assets_at_risk_early_death")
+        pct = (at_risk / investable * 100) if investable > 0 else 0
+        return (
+            f"Your early-death scenario shows <b>{_money(at_risk)}</b> at risk "
+            f"(<b>{pct:.0f}%</b> of {_money(investable)} investable assets)."
+        )
+
+    if section_key == "underestimating_care":
+        at_risk = _f(data, "assets_at_risk_ltc")
+        pct = (at_risk / investable * 100) if investable > 0 else 0
+        years = int(_f(data, "ltc_years"))
+        return (
+            f"Your modeled <b>{years}-year</b> care stay implies <b>{_money(at_risk)}</b> exposure "
+            f"(<b>{pct:.0f}%</b> of investable assets)."
+        )
+
+    if section_key == "getting_sued":
+        at_risk = _f(data, "net_at_risk_lawsuit")
+        pct = (at_risk / investable * 100) if investable > 0 else 0
+        return (
+            f"Your lawsuit scenario of <b>{_money(data.get('lawsuit_award'))}</b> leaves "
+            f"<b>{_money(at_risk)}</b> net at risk (<b>{pct:.0f}%</b> of investable assets)."
+        )
+
+    if section_key == "combined_exposure":
+        need = _f(data, "self_insurance_total")
+        pct = (need / investable * 100) if investable > 0 else 0
+        return (
+            f"Combined self-insurance need in your inputs is <b>{_money(need)}</b> "
+            f"(<b>{pct:.0f}%</b> of {_money(investable)} investable assets)."
+        )
+
+    return ""
+
+
+def flaw_sequence_bridge_paragraph(data):
+    """Tie the sequence example to this household's allocation."""
+    investable = _f(data, "investable_assets")
+    unprotected = _f(data, "stock_assets") + _f(data, "bond_assets")
+    pct = (unprotected / investable * 100) if investable > 0 else 0
+    profile = data.get("profile_label") or data.get("risk_profile") or "growth"
+    return (
+        f"<b>For your plan:</b> With a <b>{profile}</b> profile and roughly "
+        f"<b>{pct:.0f}%</b> of assets subject to market withdrawals, sequence risk is not "
+        "abstract—it applies directly to the income your plan expects from investments."
+    )

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, url_for
 import io
 import os
 import tempfile
@@ -324,6 +324,15 @@ def export_pdf():
         if tier not in REPORT_DOWNLOAD_NAMES:
             tier = "free"
 
+        if tier == "free" and payload.get("store_for_upgrade") and not cache_id:
+            cache_id = save_export_payload(inputs, charts)
+
+        upgrade_url = None
+        if tier == "free":
+            upgrade_url = url_for("upgrade", cache=cache_id, _external=True) if cache_id else url_for(
+                "upgrade", _external=True
+            )
+
         results = calculate_results(inputs)
         report_data = {**inputs, **results}
 
@@ -337,13 +346,21 @@ def export_pdf():
             pdf_path = os.path.join(tmpdir, "report.pdf")
             try:
                 generate_premium_client_report(
-                    report_data, chart_paths, pdf_path, report_tier=tier
+                    report_data,
+                    chart_paths,
+                    pdf_path,
+                    report_tier=tier,
+                    upgrade_url=upgrade_url,
                 )
             except Exception as chart_err:
                 import traceback
                 traceback.print_exc()
                 generate_premium_client_report(
-                    report_data, {}, pdf_path, report_tier=tier
+                    report_data,
+                    {},
+                    pdf_path,
+                    report_tier=tier,
+                    upgrade_url=upgrade_url,
                 )
                 if tier == "options":
                     app.logger.warning(
@@ -354,8 +371,7 @@ def export_pdf():
             with open(pdf_path, "rb") as f:
                 pdf_bytes = f.read()
 
-        if tier == "free" and payload.get("store_for_upgrade"):
-            cache_id = save_export_payload(inputs, charts)
+        if tier == "free" and payload.get("store_for_upgrade") and cache_id:
             response = send_file(
                 io.BytesIO(pdf_bytes),
                 mimetype="application/pdf",

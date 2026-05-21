@@ -16,7 +16,7 @@ DISCLOSURE_COMPARISON = (
 
 DISCLOSURE_BY_TIER = {
     "free": (
-        "<b>This free report uses fixed withdrawal-rate methodology.</b> Income from investable "
+        "<b>This complimentary report uses fixed withdrawal-rate methodology.</b> Income from investable "
         "assets is estimated using the guaranteed and unprotected withdrawal rates you entered, "
         "combined with Social Security, pensions, and other stable income. Investment outcome "
         "ranges use the profile mean return plus or minus standard deviations—they are not a "
@@ -24,12 +24,13 @@ DISCLOSURE_BY_TIER = {
         + DISCLOSURE_COMPARISON
     ),
     "options": (
-        "<b>This $99 Premium Retirement Optimization Report</b> presents educational strategies matched to your "
-        "risk tier for each paycut category, plus fixed withdrawal-rate comparisons. Content cites "
-        "commonly referenced retirement research (e.g., rational decumulation, guaranteed income) for "
-        "context only—not as personalized advice. Withdrawal scenarios assume constant average returns "
-        "and do not represent Monte Carlo probability of success. See Important Disclosures in the premium "
-        "report section for full compliance language.<br/><br/>"
+        "<b>The Premium 5 Things Report</b> presents educational strategies "
+        "matched to your risk tier for each paycut category, plus fixed withdrawal-rate comparisons. "
+        "Content cites commonly referenced retirement research (e.g., rational decumulation, "
+        "guaranteed income) for context only—not as personalized advice. Withdrawal scenarios "
+        "assume constant average returns and do not represent Monte Carlo probability of "
+        "success. See Important Disclosures in the premium report section for full compliance "
+        "language.<br/><br/>"
         + DISCLOSURE_COMPARISON
     ),
     "monte_carlo": (
@@ -50,7 +51,8 @@ UPGRADE_OPTION_DISCLOSURES = {
         "Does not include multi-rate option tables or Monte Carlo probability outputs."
     ),
     "options": (
-        "Tier-matched educational strategies and common next steps for all five paycut risks, plus withdrawal-rate "
+        "Same education, research, and observations as the complimentary report, plus tier-matched "
+        "tier-matched options to consider for all five paycut risks and a withdrawal-rate "
         "comparison. Fixed-rate analysis—not Monte Carlo. Not personalized advice."
     ),
     "monte_carlo": (
