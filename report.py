@@ -38,6 +38,10 @@ from report_enhancements import (
     self_insurance_summary_table,
     what_we_measured_text,
 )
+from report_options_solutions import (
+    FLAW_MORNINGSTAR_SOURCES,
+    FLAW_MORNINGSTAR_STRATEGY_NARRATIVE,
+)
 from report_narrative import (
     FIVE_THING_TITLES,
     FLAW_SEQUENCE_EXAMPLE_PARAGRAPHS,
@@ -936,11 +940,21 @@ def append_paid_risk_solutions(story, section_key, narratives, styles, report_ti
         options_parts.append(Spacer(1, 4))
         options_parts.append(Paragraph(para, styles["body"]))
     options_parts.append(Spacer(1, 8))
-    action_label = meta.get("next_step_label") or "Take the next step"
-    options_parts.append(Paragraph(
-        f'<a href="{next_step_url}" color="#1B2D47"><u>{action_label}</u></a>',
-        styles["body"],
-    ))
+    next_steps = meta.get("next_steps")
+    if next_steps:
+        for step in next_steps:
+            step_url = paid_next_step_url(step["key"])
+            options_parts.append(Paragraph(
+                f'<a href="{step_url}" color="#1B2D47"><u>{step["label"]}</u></a>',
+                styles["body"],
+            ))
+            options_parts.append(Spacer(1, 4))
+    else:
+        action_label = meta.get("next_step_label") or "Take the next step"
+        options_parts.append(Paragraph(
+            f'<a href="{next_step_url}" color="#1B2D47"><u>{action_label}</u></a>',
+            styles["body"],
+        ))
     story.append(Spacer(1, 8))
     story.append(options_consider_tile_box(options_parts, styles))
 
@@ -1353,6 +1367,15 @@ def append_flaw_of_averages_example(story, styles, data=None):
     if data:
         example_flow.append(Spacer(1, 8))
         example_flow.append(Paragraph(flaw_sequence_bridge_paragraph(data), styles["body"]))
+
+    example_flow.append(Spacer(1, 8))
+    example_flow.append(Paragraph(FLAW_MORNINGSTAR_STRATEGY_NARRATIVE, styles["body"]))
+    example_flow.append(Spacer(1, 4))
+    example_flow.append(Paragraph("<b>Sources</b>", styles["muted"]))
+    example_flow.append(Spacer(1, 2))
+    for source in FLAW_MORNINGSTAR_SOURCES:
+        example_flow.append(Paragraph(source, styles["muted"]))
+        example_flow.append(Spacer(1, 4))
 
     story.append(Spacer(1, 8))
     story.append(KeepTogether(example_flow))

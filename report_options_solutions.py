@@ -4,10 +4,13 @@ Premium 5 Things Report — educational strategies by risk and tier.
 
 import os
 
+_ADVISOR_URL = os.environ.get("ADVISOR_APPOINTMENT_URL", "https://www.macu.com/burie")
+
 PAID_REPORT_NEXT_STEP_URLS = {
+    "investment_advisor": os.environ.get("INVESTMENT_ADVISOR_URL", _ADVISOR_URL),
     "annuity": os.environ.get(
         "ANNUITY_APPOINTMENT_URL",
-        os.environ.get("ADVISOR_APPOINTMENT_URL", "https://www.macu.com/burie"),
+        _ADVISOR_URL,
     ),
     "term_life": os.environ.get(
         "TERM_LIFE_URL",
@@ -56,6 +59,30 @@ PAID_REPORT_EDUCATIONAL_DISCLOSURE = [
     (
         "Investment, insurance, and annuity products involve risk and are not guaranteed. "
         "Past performance and academic research are not guarantees of future results."
+    ),
+]
+
+FLAW_MORNINGSTAR_STRATEGY_NARRATIVE = (
+    "Morningstar tracks more than <b>300,000</b> mutual fund share classes and <b>28,000</b> ETFs, "
+    "along with roughly <b>2,000</b> variable annuity contracts and <b>100,000+</b> annuity subaccounts "
+    "through its annuity research tools. That breadth illustrates how many investments and annuity "
+    "products could be combined in a strategy—it is context for planning, not a recommendation to "
+    "use any particular product."
+)
+
+FLAW_MORNINGSTAR_SOURCES = [
+    (
+        "Morningstar, Inc. (2025). <i>2024 Annual Report</i>. Mutual fund share classes: 300,000; ETFs: "
+        "28,000 (counts as of January 2025). "
+        '<a href="https://shareholders.morningstar.com/financials/annual-reports/default.aspx" '
+        'color="#1B2D47"><u>https://shareholders.morningstar.com/financials/annual-reports/default.aspx</u></a>'
+    ),
+    (
+        "Morningstar, Inc. (2012, May 22). <i>Morningstar launches all-in-one solution for variable "
+        "annuity research</i> (Morningstar Annuity Intelligence). Approximately 2,000 annuity "
+        "contracts and 100,000+ subaccounts. "
+        '<a href="https://www.prnewswire.com/news-releases/morningstar-launches-all-in-one-solution-for-variable-annuity-research-152284185.html" '
+        'color="#1B2D47"><u>https://www.prnewswire.com/news-releases/morningstar-launches-all-in-one-solution-for-variable-annuity-research-152284185.html</u></a>'
     ),
 ]
 
@@ -436,11 +463,23 @@ PAID_RISK_SECTIONS = {
         "subtitle": "Managing Market Risk &amp; Sequence Risk",
         "next_step_key": "annuity",
         "next_step_label": "Schedule a consultation with an annuity specialist",
+        "next_steps": [
+            {
+                "key": "investment_advisor",
+                "label": "Schedule a consultation with an investment advisor",
+            },
+            {
+                "key": "annuity",
+                "label": "Schedule a consultation with an annuity specialist",
+            },
+        ],
         "research": [
             (
                 "Traditional retirement planning often relies on average returns. However, the "
                 "sequence in which returns occur can significantly impact outcomes."
             ),
+            FLAW_MORNINGSTAR_STRATEGY_NARRATIVE,
+            *FLAW_MORNINGSTAR_SOURCES,
             (
                 "Research on <i>Rational Decumulation</i> suggests that combining investment "
                 "portfolios with guaranteed income sources can improve retirement outcomes and "
@@ -551,6 +590,7 @@ PAID_TIER_CONTENT = {
                 "Modestly rebalance toward <b>fixed income or lower-volatility assets</b>",
                 "Incorporate <b>buffered ETFs (e.g., BUFB)</b>",
                 "Allocate a portion of assets to <b>guaranteed income strategies</b>",
+                "Schedule a consultation with an <b>investment advisor</b>",
             ],
         },
         "at_risk": {
@@ -560,6 +600,7 @@ PAID_TIER_CONTENT = {
                 "Adjust allocation toward <b>lower volatility assets</b>",
                 "Introduce <b>structured ETFs</b> to help limit downside risk",
                 "Shift a portion of income needs to <b>guaranteed income sources</b>",
+                "Schedule a consultation with an <b>investment advisor</b>",
             ],
         },
         "high_risk": {
@@ -572,6 +613,7 @@ PAID_TIER_CONTENT = {
                     "Allow <b>guaranteed income to cover a greater share of withdrawals early "
                     "in retirement</b>"
                 ),
+                "Schedule a consultation with an <b>investment advisor</b>",
             ],
         },
     },
@@ -734,6 +776,11 @@ def paid_next_step_url(step_key):
 
 
 PAID_QUOTE_LINKS = [
+    {
+        "key": "investment_advisor",
+        "label": "Schedule a consultation with an investment advisor",
+        "note": "Market &amp; sequence risk — portfolio and strategy review (section 1)",
+    },
     {
         "key": "annuity",
         "label": "Schedule a consultation with an annuity specialist",
