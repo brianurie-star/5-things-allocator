@@ -335,6 +335,24 @@ def _money(v):
     return f"${float(v or 0):,.0f}"
 
 
+def dying_too_soon_exposure_explanation(data):
+    """Plain-language NPV-of-lost-Social-Security explanation for chart and report copy."""
+    at_risk = _f(data, "assets_at_risk_early_death")
+    his_ss = _f(data, "his_social_security")
+    her_ss = _f(data, "her_social_security")
+    higher = max(his_ss, her_ss)
+    lower = min(his_ss, her_ss)
+    return (
+        f"<b>{_money(at_risk)}</b> is the <b>net present value</b> (in today’s dollars) of the "
+        f"Social Security income the household would lose if the spouse with the smaller benefit "
+        f"dies first. The survivor typically keeps the higher benefit—not both checks—so we value "
+        f"the smaller monthly stream "
+        f"(<b>{_money(lower)}/month</b> vs <b>{_money(higher)}/month</b> survivor benefit) over "
+        f"each spouse’s remaining retirement years at your inflation assumption, then subtract "
+        f"life insurance protection you entered."
+    )
+
+
 def client_context_paragraph(section_key, data):
     """One client-specific sentence appended to tier observations."""
     investable = _f(data, "investable_assets")
@@ -368,12 +386,7 @@ def client_context_paragraph(section_key, data):
         )
 
     if section_key == "dying_too_soon":
-        at_risk = _f(data, "assets_at_risk_early_death")
-        pct = (at_risk / investable * 100) if investable > 0 else 0
-        return (
-            f"Your early-death scenario shows <b>{_money(at_risk)}</b> at risk "
-            f"(<b>{pct:.0f}%</b> of {_money(investable)} investable assets)."
-        )
+        return f"<b>Your results:</b> {dying_too_soon_exposure_explanation(data)}"
 
     if section_key == "underestimating_care":
         at_risk = _f(data, "assets_at_risk_ltc")

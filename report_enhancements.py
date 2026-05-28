@@ -34,8 +34,16 @@ CHART_CAPTIONS = {
     "outcomes": "Illustrative return ranges using your profile mean return and standard deviation (not Monte Carlo).",
     "cashflow": "Monthly living expenses, protection costs, estimated taxes, and extras.",
     "coverage": "Protected annual income compared with basic living expenses (annual).",
-    "early_death": "Share of investable assets potentially at risk if death occurs earlier than planned.",
-    "ltc": "Share of investable assets potentially needed for a modeled long-term care stay.",
+    "early_death": (
+        "“Amount at risk” is the <b>net present value</b> of the smaller Social Security check the "
+        "household would lose if that spouse dies first (the survivor usually keeps the higher "
+        "benefit, not both), over remaining retirement years at your inflation assumption, minus "
+        "life insurance protection you entered."
+    ),
+    "ltc": (
+        "Modeled long-term care exposure (custodial care)—separate from routine healthcare and "
+        "from what Medicare generally covers for non-medical long-term care."
+    ),
     "lawsuit": "Net investable assets at risk after liability limits in the lawsuit scenario.",
     "lawsuit_income": "Annual income categories relative to the lawsuit scenario modeled.",
     "self_insurance_bar": "Dollar exposure by event risk before insurance offsets.",
@@ -52,7 +60,9 @@ WHAT_WE_MEASURED = {
         "surplus/gap {surplus}."
     ),
     "dying_too_soon": (
-        "Early-death exposure of {at_risk} ({pct:.0f}% of {assets} investable assets)."
+        "Early-death exposure of {at_risk}: net present value of the lost, smaller Social Security "
+        "stream (his {his_ss}/mo, hers {her_ss}/mo) over remaining retirement years, minus life "
+        "insurance protection."
     ),
     "underestimating_care": (
         "Modeled {ltc_years}-year care stay at {ltc_monthly}/month; exposure {at_risk} ({pct:.0f}% of assets)."
@@ -266,11 +276,12 @@ def what_we_measured_text(section_key, data):
 
     if section_key == "dying_too_soon":
         at_risk = float(data.get("assets_at_risk_early_death", 0) or 0)
-        pct = (at_risk / investable * 100) if investable > 0 else 0
+        his_ss = _money(data.get("his_social_security"))
+        her_ss = _money(data.get("her_social_security"))
         return WHAT_WE_MEASURED["dying_too_soon"].format(
             at_risk=_money(at_risk),
-            pct=pct,
-            assets=_money(investable),
+            his_ss=his_ss,
+            her_ss=her_ss,
         )
 
     if section_key == "underestimating_care":

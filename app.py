@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, jsonify, send_file, url_for
+from flask import Flask, render_template, request, jsonify, send_file, url_for, redirect
 import io
 import os
 import tempfile
 
 from export_cache import load_export_payload, save_export_payload
 from report import generate_premium_client_report, save_base64_png
+from brand_serve import brand_asset, register_brand_routes
+from alpine_retirement_consulting import create_blueprint
 
 REPORT_DOWNLOAD_NAMES = {
     "free": "retirement_report.pdf",
@@ -24,6 +26,10 @@ app = Flask(
     template_folder=os.path.join(_APP_DIR, "templates"),
     static_folder=os.path.join(_APP_DIR, "static"),
 )
+
+register_brand_routes(app)
+app.register_blueprint(create_blueprint(url_prefix="/"))
+app.context_processor(lambda: {"brand_asset": brand_asset})
 
 DEFAULT_INPUTS = {
     "client_name": "Sample Client",
@@ -98,6 +104,38 @@ def get_home_equity_factor(age):
     if age < 80:
         return 0.50
     return 0.55
+
+
+def _pv_of_monthly_benefit(monthly_amount, years, inflation_rate):
+    """Present value of a monthly income stream over remaining retirement years."""
+    annual = monthly_amount * 12
+    if years <= 0 or annual <= 0:
+        return 0.0
+    if inflation_rate <= 0:
+        return annual * years
+    return annual * (1 - (1 + inflation_rate) ** (-years)) / inflation_rate
+
+
+def early_death_social_security_exposure(data):
+    """
+    Estimate at-risk dollars as the present value of the smaller Social Security
+    benefit stream (lost if that spouse dies first), minus life insurance protection.
+    """
+    his_ss = to_float(data.get("his_social_security"))
+    her_ss = to_float(data.get("her_social_security"))
+    his_age = to_float(data.get("his_age"))
+    her_age = to_float(data.get("her_age"))
+    his_years = max(to_float(data.get("his_life_expectancy")) - his_age, 0)
+    her_years = max(to_float(data.get("her_life_expectancy")) - her_age, 0)
+    inflation = to_float(data.get("inflation"))
+    if inflation > 1:
+        inflation /= 100.0
+
+    pv_his = _pv_of_monthly_benefit(his_ss, his_years, inflation)
+    pv_her = _pv_of_monthly_benefit(her_ss, her_years, inflation)
+    gross_exposure = min(pv_his, pv_her)
+    life_insurance_protection = to_float(data.get("life_insurance_protection"))
+    return max(gross_exposure - life_insurance_protection, 0.0)
 
 
 def get_portfolio_profiles(data):
@@ -214,8 +252,7 @@ def calculate_results(data):
     ltc_insurance_protection = to_float(data.get("ltc_insurance_protection"))
     assets_at_risk_ltc = max((monthly_ltc_cost * 12 * ltc_years * 2) - ltc_insurance_protection, 0)
 
-    life_insurance_protection = to_float(data.get("life_insurance_protection"))
-    assets_at_risk_early_death = max((investable_assets * 0.25) - life_insurance_protection, 0)
+    assets_at_risk_early_death = early_death_social_security_exposure(data)
 
     lawsuit_award = to_float(data.get("lawsuit_award"))
     auto_insurance_protection = to_float(data.get("auto_insurance_protection"))
@@ -274,25 +311,48 @@ def calculate_results(data):
     }
 
 
-@app.route("/")
+@app.route("/five-things")
 def home():
-    return render_template("home.html")
+    from report_disclosures import DATA_PRIVACY_NOTICE_TAGLINE, DATA_PRIVACY_NOTICE_WEB
+
+    return render_template(
+        "home.html",
+        privacy_tagline=DATA_PRIVACY_NOTICE_TAGLINE,
+        privacy_notice=DATA_PRIVACY_NOTICE_WEB,
+    )
+
+
+@app.route("/consulting")
+@app.route("/consulting/")
+def consulting_redirect():
+    return redirect(url_for("alpine_consulting.home"))
 
 
 @app.route("/allocator")
 def allocator():
-    return render_template("index.html", defaults=DEFAULT_INPUTS)
+    from report_disclosures import DATA_PRIVACY_NOTICE_WEB
+
+    return render_template(
+        "index.html",
+        defaults=DEFAULT_INPUTS,
+        privacy_notice=DATA_PRIVACY_NOTICE_WEB,
+    )
 
 
 @app.route("/upgrade")
 def upgrade():
-    from report_disclosures import DISCLOSURE_COMPARISON, UPGRADE_OPTION_DISCLOSURES
+    from report_disclosures import (
+        DATA_PRIVACY_NOTICE_WEB,
+        DISCLOSURE_COMPARISON,
+        UPGRADE_OPTION_DISCLOSURES,
+    )
 
     cache_id = request.args.get("cache", "").strip() or None
     return render_template(
         "upgrade.html",
         comparison_disclosure=DISCLOSURE_COMPARISON,
         option_disclosures=UPGRADE_OPTION_DISCLOSURES,
+        privacy_notice=DATA_PRIVACY_NOTICE_WEB,
         cache_id=cache_id,
         appointment_url=ADVISOR_APPOINTMENT_URL,
     )

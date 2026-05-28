@@ -32,6 +32,14 @@
   margin-bottom: 2rem;
 }
 
+.upgrade-header .privacy-notice {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--alpine-muted);
+  max-width: 48rem;
+}
+
 .eyebrow {
   margin: 0 0 0.5rem;
   font-size: 0.78rem;

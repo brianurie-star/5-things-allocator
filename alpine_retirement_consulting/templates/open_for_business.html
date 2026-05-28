@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alpine Retirement Consulting</title>
+  <link rel="stylesheet" href="{{ brand_asset('theme.css') }}">
+  <link rel="stylesheet" href="{{ brand_asset('components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+  <link rel="stylesheet" href="{{ url_for('alpine_consulting.static', filename='site.css') }}">
+</head>
+<body class="home-page arc-page">
+  <section class="home-hero arc-home-hero" aria-label="Welcome">
+    <div class="hero-stage arc-hero-stage">
+      <div class="hero-backdrop" role="img" aria-label="Mountain landscape"></div>
+
+      <header class="site-header site-header--overlay arc-top-nav">
+        <a class="site-logo arc-logo-header" href="{{ url_for('alpine_consulting.home') }}">
+          <img
+            class="arc-logo-header-img"
+            src="{{ brand_asset('alpine-retirement-consulting-logo.png') }}"
+            alt="Alpine Retirement Consulting — home"
+            width="160"
+            height="88"
+          >
+        </a>
+        <nav class="site-nav arc-top-nav-links" aria-label="Main">
+          <a href="{{ url_for('alpine_consulting.home') }}">Home</a>
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="{{ five_things_home_url }}">Free Report</a>
+        </nav>
+        <a class="btn btn-primary btn-nav arc-top-nav-cta" href="{{ advisor_url }}" target="_blank" rel="noopener noreferrer">
+          Schedule a consultation
+        </a>
+      </header>
+
+      <div class="arc-hero-body">
+        <div class="arc-hero-centered">
+          <div class="arc-hero-logo-match">
+            <span class="arc-hero-headline arc-hero-headline--width-ref" aria-hidden="true">You build things. We do too.</span>
+            <img
+              class="arc-hero-logo-main"
+              src="{{ brand_asset('alpine-retirement-consulting-logo.png') }}"
+              alt="Alpine Retirement Consulting"
+              width="320"
+              height="175"
+            >
+          </div>
+          <h1 class="arc-hero-headline">You build things. We do too.</h1>
+          <hr class="arc-hero-rule" />
+          <p class="arc-hero-dek">
+            401(k) Advisory &amp; Business Exit Planning for<br>
+            business owners, founders, and professional firms.
+          </p>
+          <a class="btn btn-primary btn-nav" href="{{ advisor_url }}" target="_blank" rel="noopener noreferrer">
+            Schedule a consultation
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="about" class="section arc-below-hero">
+      <div class="arc-intro-layout">
+        <div class="section-intro arc-below-intro">
+          <p class="eyebrow">Alpine Retirement Consulting</p>
+          <h2>Dedicated to your business and your people</h2>
+          <p>
+            As a corporate wealth advisory team, we are dedicated to the success of our clients and their businesses.
+            We have been trusted to serve business owners across the U.S. for more than 25 years.
+          </p>
+          <p>
+            Our team includes wealth and insurance specialists with decades of experience. They work alongside your
+            financial advisor—or support your existing advisors—with expertise that can be hard to find elsewhere.
+          </p>
+        </div>
+        <aside class="aside-card arc-needs-card">
+          <h3>Five common business needs</h3>
+          <ol class="arc-needs-list">
+            <li>Attracting and retaining key employees</li>
+            <li>Planning for business succession</li>
+            <li>Managing personal and business taxes</li>
+            <li>Effectively managing short-term cash</li>
+            <li>Building and protecting personal wealth</li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <div class="arc-hero-extension" aria-label="Open for Business">
+      <img
+        class="arc-open-sign"
+        src="{{ url_for('alpine_consulting.static', filename='open-for-business-sign.png') }}"
+        alt="Open for Business"
+        width="1024"
+        height="768"
+        loading="lazy"
+      >
+    </div>
+
+    <section id="services" class="section arc-services">
+      <ol class="things-grid arc-service-grid">
+        <li class="thing-card">
+          <h3>Business Retirement Plans</h3>
+          <p>
+            A retirement plan can anchor recruitment and retention—and give owners a tax-advantaged way
+            to save for their own retirement.
+          </p>
+          <ul class="arc-tile-list">
+            <li>SEP IRA, SIMPLE IRA, 401(k), profit sharing</li>
+            <li>Cash balance and non-qualified deferred compensation</li>
+          </ul>
+          <p class="arc-tile-link">
+            <a href="{{ virtual_assistant_url }}" target="_blank" rel="noopener noreferrer">
+              Chat with our Virtual Assistant
+            </a>
+          </p>
+        </li>
+
+        <li class="thing-card">
+          <h3>Business Insurance</h3>
+          <p>
+            Protect key personnel, plan for succession, and help your company continue after the owner
+            retires. We evaluate existing policies or help you find the right solution.
+          </p>
+          <ul class="arc-tile-list">
+            <li>Buy/sell and succession funding</li>
+            <li>Key person life insurance and risk management</li>
+            <li>Coordination with legal and accounting professionals</li>
+            <li>Deferred compensation for key employees</li>
+          </ul>
+        </li>
+
+        <li class="thing-card thing-card--cta">
+          <h3>Business Exit Planning &amp; Wealth Management</h3>
+          <p>
+            Most owners lack a formal exit plan. We help identify valuation, tax, and estate steps so you
+            can retire from your business on your timetable—with the lifestyle you want.
+          </p>
+          <ul class="arc-tile-list">
+            <li>Retirement needs analysis</li>
+            <li>Income strategies for business owners</li>
+            <li>Tax strategy development</li>
+            <li>Investment management</li>
+          </ul>
+          <a class="btn btn-primary btn-nav arc-tile-allocator-btn" href="{{ allocator_url }}">
+            Open 5 Things™ Allocator
+          </a>
+        </li>
+
+        <li class="thing-card thing-card--cta">
+          <h3>Schedule consultation</h3>
+          <p>
+            Meet Brian Urie, MS, CFP<sup>®</sup>, CPFA<sup>®</sup>—corporate wealth advisor with 25 years
+            of experience helping business owners and employees reach their goals.
+          </p>
+          <img
+            class="arc-advisor-photo"
+            src="{{ url_for('alpine_consulting.static', filename='brian-urie.png') }}"
+            alt="Brian Urie, MS, CFP®, CPFA® — corporate wealth advisor"
+            width="381"
+            height="266"
+            loading="lazy"
+          >
+          <div class="arc-tile-actions">
+            <a class="btn btn-primary" href="{{ advisor_url }}" target="_blank" rel="noopener noreferrer">
+              Schedule consultation
+            </a>
+            <a class="btn btn-secondary" href="{{ advisor_url }}" target="_blank" rel="noopener noreferrer">
+              Read bio
+            </a>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section cta-band">
+      <h2>Planning for personal retirement?</h2>
+      <p>
+        Stress-test the five retirement paycut risks with the complimentary<br>
+        5 Things™ Allocator—charts and narrative guidance in your PDF report.
+      </p>
+      <a class="btn btn-primary btn-lg" href="{{ allocator_url }}">Open 5 Things™ Allocator</a>
+    </section>
+  </main>
+
+  <footer class="home-footer">
+    <p>
+      For educational planning purposes. Securities and advisory services offered through LPL Financial,
+      a registered investment advisor and broker-dealer (member FINRA/SIPC). Insurance offered through
+      LPL or its licensed affiliates. Mountain America Credit Union and Mountain America Investment
+      Services are not registered broker-dealers or investment advisors.
+      <a href="{{ advisor_url }}" target="_blank" rel="noopener noreferrer">Advisor disclosures</a>
+    </p>
+  </footer>
+</body>
+</html>

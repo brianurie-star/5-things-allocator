@@ -5,7 +5,28 @@ Free and premium reports share educational copy, research, and observations. The
 only adds the tier-matched "Options to consider" block—not shown in free.
 """
 
+import os
+
 from report_options_solutions import PAID_RISK_SECTIONS, RISK_SOLUTION_ORDER
+
+_ADVISOR_URL = os.environ.get("ADVISOR_APPOINTMENT_URL", "https://www.macu.com/burie")
+
+FREE_ADVISOR_PROBABILITY_INVITE = {
+    "eyebrow": "Advisor-driven",
+    "title": "Advanced- Probability review",
+    "price": "$999",
+    "summary": (
+        "Everything in this complimentary report, plus a <b>Monte Carlo probability study</b> with "
+        "success rates and ending-wealth percentiles across simulated market paths—and consultation "
+        "with an advisor to interpret what the results mean for your plan."
+    ),
+    "note": (
+        "This is an advisor-led review, not an instant PDF download. Schedule a consultation to "
+        "request the advanced probability review."
+    ),
+    "cta_label": "Schedule a consultation",
+    "appointment_url": _ADVISOR_URL,
+}
 
 FREE_OPTIONS_UPGRADE_TILES = {
     "flaw_of_averages": {
@@ -17,7 +38,7 @@ FREE_OPTIONS_UPGRADE_TILES = {
     "living_too_long": {
         "summary": (
             "Premium report adds tier-matched <b>options to consider</b> for your "
-            "<b>longevity income</b> tier (guaranteed income, spending flexibility, and related ideas)."
+            "<b>longevity income</b> tier."
         ),
     },
     "dying_too_soon": {
@@ -35,7 +56,7 @@ FREE_OPTIONS_UPGRADE_TILES = {
     "getting_sued": {
         "summary": (
             "Premium report adds tier-matched <b>options to consider</b> for your "
-            "<b>liability</b> tier, plus educational umbrella and quote links."
+            "<b>liability</b> tier."
         ),
     },
 }

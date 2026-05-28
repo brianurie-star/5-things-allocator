@@ -18,6 +18,10 @@ PAID_REPORT_NEXT_STEP_URLS = {
     ),
     "ltc": os.environ.get("LTC_QUOTE_URL", "https://www.macu.com/burie"),
     "umbrella": os.environ.get("UMBRELLA_QUOTE_URL", "https://www.macu.com/burie"),
+    "liability_questionnaire": os.environ.get(
+        "LIABILITY_QUESTIONNAIRE_URL",
+        "https://www.macu.com/burie",
+    ),
 }
 
 PAID_REPORT_INTRO = [
@@ -179,9 +183,37 @@ LONGEVITY_RESEARCH = {
 DYING_TOO_SOON_RESEARCH = {
     "section_title": "Survivor Income Risk",
     "key_research_points": [
-        "Survivor benefits are often lower than joint household income—not half of combined cash flow.",
-        "Fixed costs frequently remain while pensions, annuities, or assets may pay differently.",
-        "Planning should stress-test one-household income, not only the joint plan.",
+        (
+            "<b>Amount at risk</b> in the chart is the <b>net present value</b> of the smaller Social "
+            "Security check lost if that spouse dies first—not a fixed percentage of investable assets."
+        ),
+        (
+            "Household expenses often do <b>not</b> fall by half when one spouse dies—housing, taxes, "
+            "utilities, and many other costs can remain much closer to what the couple paid before."
+        ),
+        (
+            "Survivor income (Social Security, pensions, annuities) is often lower than the "
+            "couple's combined income—not a simple offset to unchanged expenses."
+        ),
+    ],
+    "exposure_method_heading": "How we calculate “amount at risk”",
+    "exposure_method_paragraphs": [
+        (
+            "The red slice in the chart is <b>not</b> an arbitrary share of your portfolio. It estimates "
+            "how much future Social Security income could be lost if the spouse with the <b>smaller</b> "
+            "monthly benefit dies first."
+        ),
+        (
+            "We add up that lost monthly check over each spouse’s remaining retirement years, discount "
+            "future dollars to <b>today’s value</b> using your inflation assumption (net present value), "
+            "then subtract life insurance protection you entered. That single dollar amount is what the "
+            "chart labels as amount at risk."
+        ),
+    ],
+    "exposure_method_bullets": [
+        "Survivor rule modeled: the household keeps the higher Social Security benefit, not both checks",
+        "The stream at risk is the smaller of his and her monthly Social Security",
+        "Life insurance protection reduces exposure dollar-for-dollar",
     ],
     "understanding_heading": "When a spouse dies early",
     "understanding_paragraphs": [
@@ -189,7 +221,9 @@ DYING_TOO_SOON_RESEARCH = {
             "The loss of a spouse is not only emotional—it can also create a significant financial shift."
         ),
         (
-            "As illustrated below, income may decline while expenses remain the same or even increase."
+            "As the chart and research below illustrate, income may decline while expenses remain the "
+            "same or even increase—the dollar exposure reflects lost Social Security (net present value), "
+            "not a fixed slice of investable assets."
         ),
     ],
     "retirement_income_heading": "Effect on retirement income",
@@ -253,9 +287,13 @@ DYING_TOO_SOON_RESEARCH = {
 UNDERESTIMATING_CARE_RESEARCH = {
     "section_title": "Healthcare &amp; Long-Term Care Risk",
     "key_research_points": [
-        "Healthcare in retirement is a major, unpredictable expense—often separate from long-term care.",
+        (
+            "<b>Medicare is not long-term care insurance.</b> The official Medicare handbook "
+            "distinguishes medical/skilled care Medicare may cover from custodial help with "
+            "daily activities—which is usually paid another way."
+        ),
+        "Ongoing healthcare (premiums, supplements, out-of-pocket) is a separate budget line from a long-term care stay.",
         "Care events can redirect a large share of investable assets away from lifestyle income.",
-        "Duration and monthly cost assumptions materially change exposure.",
     ],
     "understanding_heading": "Healthcare and long-term care in retirement",
     "understanding_paragraphs": [
@@ -278,6 +316,46 @@ UNDERESTIMATING_CARE_RESEARCH = {
     "healthcare_costs_closing": (
         "They do not include long-term care, which represents a separate and often larger "
         "financial risk."
+    ),
+    "medicare_distinction_heading": "What Medicare covers—and what it does not",
+    "medicare_distinction_paragraphs": [
+        (
+            "Many households lump <b>healthcare in retirement</b> together with <b>long-term care</b>, "
+            "but Medicare treats them differently. That matters for planning: one is largely "
+            "ongoing insurance and out-of-pocket cost; the other is often a large, episodic shock."
+        ),
+        (
+            "The Centers for Medicare &amp; Medicaid Services explains in <i>Medicare &amp; You</i> "
+            "and on Medicare.gov that <b>skilled nursing facility care</b> is not the same as "
+            "<b>non-medical long-term care</b>. Skilled care requires professional treatment when "
+            "you are expected to recover. Non-medical long-term care is help with everyday activities "
+            "such as bathing, dressing, using the bathroom, and eating when personal care is the "
+            "main need."
+        ),
+        (
+            "Medicare generally does <b>not</b> pay for that non-medical, custodial long-term care "
+            "when it is the only care you need. Limited skilled nursing may be covered in specific "
+            "situations; routine extended care in a facility or at home is typically paid from "
+            "savings, long-term care insurance, or Medicaid if you qualify—not from Medicare as a "
+            "default."
+        ),
+    ],
+    "medicare_distinction_bullets": [
+        "Healthcare in this report: Medicare premiums, supplements, and typical out-of-pocket medical costs",
+        "Long-term care in this report: the modeled monthly care cost × duration (separate from Medicare routine coverage)",
+        "Confusing the two can understate the risk of a multi-year care stay",
+    ],
+    "medicare_handbook_citation": (
+        "Centers for Medicare &amp; Medicaid Services. (2025). <i>Medicare &amp; You</i> "
+        "(official U.S. government handbook). "
+        '<a href="https://www.medicare.gov/publications/11036-medicare-and-you" color="#1B2D47">'
+        "<u>https://www.medicare.gov/publications/11036-medicare-and-you</u></a>"
+    ),
+    "medicare_ltc_coverage_citation": (
+        "Centers for Medicare &amp; Medicaid Services. (n.d.). <i>Long-term care</i>. Medicare.gov. "
+        '<a href="https://www.medicare.gov/health-drug-plans/med-health-plans-your-coverage-options/long-term-care" '
+        'color="#1B2D47">'
+        "<u>https://www.medicare.gov/health-drug-plans/med-health-plans-your-coverage-options/long-term-care</u></a>"
     ),
     "ltc_cost_heading": "Long-term care costs",
     "ltc_cost_paragraphs": [
@@ -337,6 +415,19 @@ UNDERESTIMATING_CARE_RESEARCH = {
     ),
     "apa_references_heading": "References",
     "apa_references": [
+        (
+            "Centers for Medicare &amp; Medicaid Services. (2025). <i>Medicare &amp; You</i> "
+            "(official U.S. government handbook; distinguishes skilled nursing care from "
+            "non-medical long-term care). "
+            '<a href="https://www.medicare.gov/publications/11036-medicare-and-you" color="#1B2D47">'
+            "<u>https://www.medicare.gov/publications/11036-medicare-and-you</u></a>"
+        ),
+        (
+            "Centers for Medicare &amp; Medicaid Services. (n.d.). <i>Long-term care</i>. Medicare.gov. "
+            '<a href="https://www.medicare.gov/health-drug-plans/med-health-plans-your-coverage-options/long-term-care" '
+            'color="#1B2D47">'
+            "<u>https://www.medicare.gov/health-drug-plans/med-health-plans-your-coverage-options/long-term-care</u></a>"
+        ),
         (
             "Fidelity Investments. (2023). <i>Retiree health care cost estimate</i>. "
             '<a href="https://www.fidelity.com/viewpoints/personal-finance/plan-for-rising-health-care-costs" '
@@ -570,6 +661,16 @@ PAID_RISK_SECTIONS = {
         "subtitle": "Liability Risk",
         "next_step_key": "umbrella",
         "next_step_label": "Request an umbrella insurance quote",
+        "next_steps": [
+            {
+                "key": "umbrella",
+                "label": "Request an umbrella insurance quote",
+            },
+            {
+                "key": "liability_questionnaire",
+                "label": "Request a liability exposure questionnaire",
+            },
+        ],
         "research": [
             (
                 "Ebeling, A. (2012, March 5). <i>The #1 fear: Being sued—but shun umbrella insurance</i>. "
@@ -680,8 +781,21 @@ PAID_TIER_CONTENT = {
             ),
             "bullets": [
                 "Add <b>10-, 15-, or 20-year term policies</b>",
-                "Ladder coverage so protection decreases over time",
+                (
+                    "<b>Ladder coverage:</b> buy part of the death benefit on the longest term you need "
+                    "and additional portions on shorter terms so total protection steps down over time"
+                ),
                 "Match coverage duration to the period of greatest financial risk",
+            ],
+            "after_bullets": [
+                (
+                    "Laddering means you do not buy one oversized policy for the full horizon. You might "
+                    "carry one slice of coverage for 20 years, another for 15 years, and another for 10 years. "
+                    "As each term ends, the survivor benefit you are insuring falls off—much like the "
+                    "present value of lost Social Security and other income needs typically declines as you "
+                    "move deeper into retirement. Premium cost can be lower than a single large long-term "
+                    "policy while still protecting the years when the gap would hurt most."
+                ),
             ],
         },
         "high_risk": {
@@ -717,6 +831,7 @@ PAID_TIER_CONTENT = {
             ),
             "bullets": [
                 "Traditional long-term care insurance",
+                "Long-term care services rider on a life insurance policy",
                 "Hybrid LTC strategies combining protection and asset use",
                 "Rely on government (Medicaid) or family",
             ],
@@ -764,7 +879,10 @@ PAID_TIER_CONTENT = {
             "bullets": [
                 "Significantly increase umbrella coverage",
                 "Align protection with your full balance sheet",
-                "Reduce exposure to large liability events",
+                (
+                    "Reduce exposure to large liability events (volunteer work, vacation properties, "
+                    "recreation vehicles, etc.)"
+                ),
             ],
         },
     },
@@ -800,6 +918,11 @@ PAID_QUOTE_LINKS = [
         "key": "umbrella",
         "label": "Request an umbrella insurance quote",
         "note": "Liability protection (section 5)",
+    },
+    {
+        "key": "liability_questionnaire",
+        "label": "Request a liability exposure questionnaire",
+        "note": "Liability exposure review (section 5)",
     },
 ]
 

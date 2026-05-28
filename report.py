@@ -24,7 +24,7 @@ from reportlab.platypus import (
 )
 
 from monte_carlo import run_retirement_monte_carlo
-from report_disclosures import DISCLOSURE_BY_TIER
+from report_disclosures import DATA_PRIVACY_DISCLOSURE, DISCLOSURE_BY_TIER
 from report_enhancements import (
     CHART_CAPTIONS,
     build_risk_dashboard_table,
@@ -48,6 +48,7 @@ from report_narrative import (
     NARRATIVE_COPY,
     classify_all_narratives,
     client_context_paragraph,
+    dying_too_soon_exposure_explanation,
     flaw_sequence_bridge_paragraph,
     get_narrative_block,
 )
@@ -65,7 +66,10 @@ from report_options_solutions import (
     get_paid_tier_block,
     paid_next_step_url,
 )
-from report_upgrade_tiles import free_options_upgrade_tile_copy
+from report_upgrade_tiles import (
+    FREE_ADVISOR_PROBABILITY_INVITE,
+    free_options_upgrade_tile_copy,
+)
 
 REPORT_TIER_LABELS = {
     "free": "Complimentary Report",
@@ -277,7 +281,8 @@ def build_assumption_groups(data):
                 ),
                 (
                     "Early death exposure",
-                    "25% of investable assets minus life insurance protection",
+                    "Present value of the smaller Social Security benefit over remaining "
+                    "retirement years (inflation-adjusted), minus life insurance protection",
                 ),
                 (
                     "Long-term care exposure",
@@ -911,6 +916,48 @@ def append_free_options_upgrade_tile(story, section_key, upgrade_url, styles):
     story.append(options_consider_tile_box(parts, styles))
 
 
+def append_free_advisor_probability_invite(story, styles, upgrade_url=None):
+    """End-of-complimentary-report invitation to the advisor-led Monte Carlo review."""
+    invite = FREE_ADVISOR_PROBABILITY_INVITE
+    appointment_url = invite["appointment_url"]
+
+    parts = [
+        Paragraph(
+            f'<font color="#A88652"><b>{invite["eyebrow"].upper()}</b></font>',
+            styles["muted"],
+        ),
+        Paragraph(f"<b>{invite['title']}</b>", styles["h2_section"]),
+        Paragraph(f'<font color="#1B2D47"><b>{invite["price"]}</b></font>', styles["body"]),
+        Spacer(1, 4),
+        Paragraph(invite["summary"], styles["body"]),
+        Spacer(1, 6),
+        Paragraph(invite["note"], styles["muted"]),
+        Spacer(1, 8),
+        Paragraph(
+            f'<a href="{appointment_url}" color="#1B2D47">'
+            f"<u>{invite['cta_label']}</u></a>",
+            styles["body"],
+        ),
+        Paragraph(
+            f'<font color="{THEME["muted"]}">{appointment_url}</font>',
+            styles["muted"],
+        ),
+    ]
+    if upgrade_url:
+        parts.append(Spacer(1, 8))
+        parts.append(Paragraph(
+            '<b>Self-serve upgrade:</b> '
+            f'<a href="{upgrade_url}" color="#1B2D47">'
+            "<u>Premium 5 Things Report and other options</u></a>",
+            styles["body"],
+        ))
+
+    story.append(Spacer(1, 14))
+    story.append(Paragraph("<b>Continue your planning</b>", styles["h1"]))
+    story.append(Spacer(1, 8))
+    story.append(options_consider_tile_box(parts, styles))
+
+
 def append_paid_risk_solutions(story, section_key, narratives, styles, report_tier="options"):
     """Tier-matched strategies for Premium 5 Things reports — context card + Options tile."""
     if (report_tier or "").lower() != "options":
@@ -1090,13 +1137,29 @@ def append_longevity_research_evidence(story, styles):
     append_flow_block(story, ref_parts, trailing_spacer=0)
 
 
-def append_dying_too_soon_research_evidence(story, styles):
+def append_dying_too_soon_research_evidence(story, styles, data=None):
     """Survivor income risk context, slide figure, and retirement income impact."""
     ds = DYING_TOO_SOON_RESEARCH
     story.append(Spacer(1, 10))
     story.append(Paragraph(f"<b>{ds['section_title']}</b>", styles["h2_subsection"]))
     story.append(Spacer(1, 6))
     append_flow_block(story, research_key_points_flowables(ds.get("key_research_points"), styles))
+
+    method_parts = [
+        Paragraph(f"<b>{ds['exposure_method_heading']}</b>", styles["h2_section"]),
+        Spacer(1, 4),
+    ]
+    for para in ds["exposure_method_paragraphs"]:
+        method_parts.append(Paragraph(para, styles["body"]))
+        method_parts.append(Spacer(1, 4))
+    for item in ds["exposure_method_bullets"]:
+        method_parts.append(Paragraph(f"• {item}", styles["body"]))
+    if data:
+        method_parts.append(Spacer(1, 6))
+        method_parts.append(
+            Paragraph(f"<b>Your inputs:</b> {dying_too_soon_exposure_explanation(data)}", styles["body"])
+        )
+    append_flow_block(story, method_parts, trailing_spacer=6)
 
     understanding_parts = [
         Paragraph(f"<b>{ds['understanding_heading']}</b>", styles["h2_section"]),
@@ -1182,6 +1245,21 @@ def append_underestimating_care_research_evidence(story, styles):
     understanding_parts.append(Paragraph(uc["healthcare_costs_closing"], styles["body"]))
     append_flow_block(story, understanding_parts)
 
+    medicare_parts = [
+        Paragraph(f"<b>{uc['medicare_distinction_heading']}</b>", styles["h2_section"]),
+        Spacer(1, 4),
+    ]
+    for para in uc["medicare_distinction_paragraphs"]:
+        medicare_parts.append(Paragraph(para, styles["body"]))
+        medicare_parts.append(Spacer(1, 4))
+    for item in uc["medicare_distinction_bullets"]:
+        medicare_parts.append(Paragraph(f"• {item}", styles["body"]))
+    medicare_parts.append(Spacer(1, 4))
+    medicare_parts.append(Paragraph(uc["medicare_handbook_citation"], styles["muted"]))
+    medicare_parts.append(Spacer(1, 4))
+    medicare_parts.append(Paragraph(uc["medicare_ltc_coverage_citation"], styles["muted"]))
+    append_flow_block(story, medicare_parts, trailing_spacer=8)
+
     ltc_parts = [
         Paragraph(f"<b>{uc['ltc_cost_heading']}</b>", styles["h2_section"]),
         Spacer(1, 4),
@@ -1251,7 +1329,7 @@ def lawsuit_charts_row(charts, styles):
 
 
 def append_getting_sued_research_evidence(story, styles, report_tier=None, charts=None):
-    """Liability risk research and plan-impact framing (same in free and premium)."""
+    """Liability risk research and plan-impact framing (insurance framing is premium-only)."""
     gs = GETTING_SUED_RESEARCH
     story.append(Spacer(1, 10))
     story.append(Paragraph(f"<b>{gs['section_title']}</b>", styles["h2_subsection"]))
@@ -1315,14 +1393,15 @@ def append_getting_sued_research_evidence(story, styles, report_tier=None, chart
     plan_parts.append(Paragraph(gs["free_plan_closing"], styles["body"]))
     append_flow_block(story, plan_parts)
 
-    practical_parts = [
-        Paragraph(f"<b>{gs['practical_framing_heading']}</b>", styles["h2_section"]),
-        Spacer(1, 4),
-    ]
-    for para in gs["practical_framing_paragraphs"]:
-        practical_parts.append(Paragraph(para, styles["body"]))
-        practical_parts.append(Spacer(1, 6))
-    append_flow_block(story, practical_parts)
+    if (report_tier or "").lower() == "options":
+        practical_parts = [
+            Paragraph(f"<b>{gs['practical_framing_heading']}</b>", styles["h2_section"]),
+            Spacer(1, 4),
+        ]
+        for para in gs["practical_framing_paragraphs"]:
+            practical_parts.append(Paragraph(para, styles["body"]))
+            practical_parts.append(Spacer(1, 6))
+        append_flow_block(story, practical_parts)
 
     story.append(pull_quote_box(f'"{gs["verdict_quote"]}"', styles))
     story.append(Spacer(1, 10))
@@ -1709,6 +1788,16 @@ def append_disclosure_section(story, tier, styles):
     story.append(
         modern_card_stack(
             [
+                Paragraph("<b>Important disclosure — data handling</b>", styles["h2_section"]),
+                Paragraph(DATA_PRIVACY_DISCLOSURE, styles["body"]),
+            ],
+            well_bg=False,
+        )
+    )
+    story.append(Spacer(1, 10))
+    story.append(
+        modern_card_stack(
+            [
                 Paragraph("<b>Important disclosure — methodology</b>", styles["h2_section"]),
                 Paragraph(text, styles["body"]),
             ],
@@ -2047,14 +2136,23 @@ def generate_premium_client_report(
     story.append(five_thing_heading(
         3,
         "dying_too_soon",
-        "Impact on household assets and survivor income if death occurs earlier than planned.",
+        "Amount at risk is the net present value of lost Social Security if the spouse with the smaller benefit dies first.",
         styles,
     ))
+    if data:
+        story.append(
+            callout_box(
+                f"<b>How amount at risk is calculated</b><br/><br/>"
+                f"{dying_too_soon_exposure_explanation(data)}",
+                styles,
+            )
+        )
+        story.append(Spacer(1, 10))
     append_what_we_measured(story, "dying_too_soon", data, styles)
     story.append(Spacer(1, 8))
     story.append(embed_pie_chart(charts.get("early_death"), styles, "Dying Too Soon", full_width=True))
     append_chart_caption(story, "early_death", styles)
-    append_dying_too_soon_research_evidence(story, styles)
+    append_dying_too_soon_research_evidence(story, styles, data=data)
     append_narrative_with_premium(
         story,
         "dying_too_soon",
@@ -2190,6 +2288,8 @@ def generate_premium_client_report(
         append_options_report_section(story, data, styles)
     elif report_tier == "monte_carlo":
         append_monte_carlo_section(story, data, styles)
+    elif report_tier == "free":
+        append_free_advisor_probability_invite(story, styles, upgrade_url=upgrade_url)
 
     append_assumptions_section(story, data, styles)
     append_disclosure_section(story, report_tier, styles)

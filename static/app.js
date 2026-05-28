@@ -945,12 +945,12 @@ function renderResults(payload, results) {
   makePie(
     chartRefs,
     "earlyDeathChart",
-    ["Assets at Risk", "The Rest"],
+    ["Social Security at risk (NPV)", "The Rest"],
     [
       results.assets_at_risk_early_death,
       Math.max(results.investable_assets - results.assets_at_risk_early_death, 0)
     ],
-    "Potential Impact of Early Death in Retirement",
+    "Potential Impact of Early Death — NPV of lost Social Security",
     false,
     ["#c00000", "#00b050"]
   );

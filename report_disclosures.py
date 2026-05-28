@@ -2,6 +2,29 @@
 Methodology disclosures for fixed safe-withdrawal vs Monte Carlo reporting.
 """
 
+DATA_PRIVACY_NOTICE_TAGLINE = (
+    "Private by design—no cloud database of client plans and no saved user accounts."
+)
+
+DATA_PRIVACY_NOTICE_WEB = (
+    "We do not store your financial inputs in a cloud database or tie them to a user account. "
+    "What you enter is used to calculate results and build your PDF report. "
+    "If you download the complimentary report, a short-lived copy (about two hours) may be held "
+    "on our server only so you can open the premium report in the same browser session without "
+    "re-entering everything—that temporary copy cannot be looked up later by you or by others. "
+    "Download and save your PDF if you want a record; we do not keep your plan on file for retrieval."
+)
+
+DATA_PRIVACY_DISCLOSURE = (
+    "<b>Data handling.</b> We do not store your financial inputs in a cloud database or associate "
+    "them with a user account. Information you provide is processed to run the analysis and generate "
+    "this PDF. If you requested the complimentary report with the option to upgrade, inputs and chart "
+    "data may be held in short-lived server storage (about two hours) so a premium report can be "
+    "generated in the same session without re-entry; that storage is not retrievable through the "
+    "website after it expires and is not accessible to other users. Keep your downloaded PDF if you "
+    "want a lasting copy of this run."
+)
+
 DISCLOSURE_COMPARISON = (
     "<b>Fixed withdrawal (safe withdrawal rate) analysis</b> applies a steady annual withdrawal "
     "percentage to your portfolio and compounds remaining assets at an assumed average return. "

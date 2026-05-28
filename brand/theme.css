@@ -1,5 +1,4 @@
-/* Alpine Retirement Consulting — shared brand tokens */
-/* Canonical source: brand/theme.css — keep in sync when editing tokens */
+/* Alpine Retirement Consulting — shared brand tokens (canonical) */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap");
 
 :root {
@@ -35,24 +34,4 @@
   --radius: var(--alpine-radius-lg);
   --accent: var(--alpine-gold);
   --primary: var(--alpine-navy);
-}
-
-/* Navy buttons — light text (anchors need explicit color; body link styles often override) */
-.btn-primary,
-a.btn-primary,
-button.btn-primary,
-button.primary {
-  color: var(--alpine-on-navy);
-  font-weight: 600;
-}
-
-.btn-primary:hover,
-a.btn-primary:hover,
-button.btn-primary:hover,
-button.primary:hover,
-.btn-primary:focus-visible,
-a.btn-primary:focus-visible,
-button.btn-primary:focus-visible,
-button.primary:focus-visible {
-  color: var(--alpine-white);
 }

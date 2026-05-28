@@ -13,9 +13,10 @@
       <div class="hero-backdrop" role="img" aria-label="Snow-capped mountains and evergreen forest"></div>
       <header class="site-header site-header--overlay site-header--no-logo">
         <nav class="site-nav" aria-label="Main">
-          <a href="{{ url_for('home') }}">Home</a>
+          <a href="{{ url_for('alpine_consulting.home') }}">Alpine</a>
+          <a href="{{ url_for('home') }}">5 Things</a>
           <a href="#retirement-decisions">Decisions</a>
-          <a href="#five-things">5 Things</a>
+          <a href="#five-things">Paycut risks</a>
           <a href="#advisor">About</a>
         </nav>
         <a class="btn btn-primary btn-nav" href="{{ url_for('allocator') }}">Open 5 Things™ Allocator</a>
@@ -174,11 +175,13 @@
         Enter your household information, calculate results, and export a personalized PDF that
         stress-tests the five paycut risks behind your retirement income decisions.
       </p>
+      <p class="privacy-notice privacy-notice--light">{{ privacy_tagline }}</p>
       <a class="btn btn-primary btn-lg" href="{{ url_for('allocator') }}">Open 5 Things™ Allocator</a>
     </section>
   </main>
 
   <footer class="home-footer">
+    <p class="privacy-notice">{{ privacy_notice }}</p>
     <p>
       For educational planning purposes. Securities and advisory services offered through LPL Financial,
       a registered investment advisor and broker-dealer (member FINRA/SIPC). Insurance offered through

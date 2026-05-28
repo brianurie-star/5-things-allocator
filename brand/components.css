@@ -1,0 +1,100 @@
+/* Alpine Retirement Consulting — shared UI components */
+
+.btn-primary,
+a.btn-primary,
+button.btn-primary,
+button.primary {
+  color: var(--alpine-on-navy);
+  font-weight: 600;
+}
+
+.btn-primary:hover,
+a.btn-primary:hover,
+button.btn-primary:hover,
+button.primary:hover,
+.btn-primary:focus-visible,
+a.btn-primary:focus-visible,
+button.btn-primary:focus-visible,
+button.primary:focus-visible {
+  color: var(--alpine-white);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.72rem 1.35rem;
+  border-radius: var(--alpine-radius);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.btn-primary {
+  background: var(--alpine-navy);
+}
+
+.btn-primary:hover {
+  background: var(--alpine-navy-mid);
+}
+
+.btn-secondary {
+  background: var(--alpine-white);
+  color: var(--alpine-navy);
+  border-color: var(--alpine-border);
+}
+
+.btn-secondary:hover {
+  background: var(--alpine-bg-warm);
+}
+
+.btn-lg {
+  padding: 0.9rem 1.75rem;
+  font-size: 0.88rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--alpine-gold-dark);
+}
+
+.card {
+  background: var(--alpine-white);
+  border: 1px solid var(--alpine-border);
+  border-radius: var(--alpine-radius-lg);
+  padding: 1.35rem;
+  box-shadow: var(--alpine-shadow-soft);
+}
+
+.site-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem 2.5rem;
+  border-top: 1px solid var(--alpine-border);
+}
+
+.site-footer p {
+  margin: 0 0 0.75rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--alpine-muted);
+}
+
+.site-footer a {
+  color: var(--alpine-navy-mid);
+}

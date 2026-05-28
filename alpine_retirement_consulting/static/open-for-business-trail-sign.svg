@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 128" role="img" aria-label="Open for Business">
+  <defs>
+    <linearGradient id="postWood" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5c4228"/>
+      <stop offset="45%" stop-color="#7a5738"/>
+      <stop offset="100%" stop-color="#4a3420"/>
+    </linearGradient>
+    <linearGradient id="boardWood" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b8925a"/>
+      <stop offset="18%" stop-color="#c4a574"/>
+      <stop offset="55%" stop-color="#a88652"/>
+      <stop offset="100%" stop-color="#8f7044"/>
+    </linearGradient>
+    <linearGradient id="boardEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4bc8f"/>
+      <stop offset="100%" stop-color="#6b4f33"/>
+    </linearGradient>
+    <filter id="signShadow" x="-8%" y="-8%" width="116%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#0f1f35" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- post -->
+  <rect x="18" y="52" width="14" height="68" rx="2" fill="url(#postWood)"/>
+  <rect x="20" y="54" width="3" height="64" rx="1" fill="#9a7350" opacity="0.35"/>
+
+  <!-- sign board -->
+  <g filter="url(#signShadow)">
+    <path
+      d="M44 28 L312 22 Q318 22 318 30 L318 78 Q318 86 310 86 L48 92 Q40 92 40 84 L40 36 Q40 28 48 28 Z"
+      fill="url(#boardWood)"
+      stroke="url(#boardEdge)"
+      stroke-width="2.5"
+    />
+    <path
+      d="M52 36 L304 31 L304 74 L52 79 Z"
+      fill="none"
+      stroke="#6b4f33"
+      stroke-width="1"
+      opacity="0.35"
+    />
+  </g>
+
+  <!-- nail heads -->
+  <circle cx="56" cy="40" r="2.2" fill="#3d2d1c"/>
+  <circle cx="56" cy="40" r="1" fill="#8a7358" opacity="0.55"/>
+  <circle cx="296" cy="36" r="2.2" fill="#3d2d1c"/>
+  <circle cx="296" cy="36" r="1" fill="#8a7358" opacity="0.55"/>
+  <circle cx="56" cy="76" r="2.2" fill="#3d2d1c"/>
+  <circle cx="296" cy="72" r="2.2" fill="#3d2d1c"/>
+
+  <!-- carved text -->
+  <text
+    x="178"
+    y="62"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="700"
+    letter-spacing="0.02em"
+    fill="#1b2d47"
+  >Open for Business</text>
+  <text
+    x="178"
+    y="62"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="700"
+    letter-spacing="0.02em"
+    fill="none"
+    stroke="#f8f4ea"
+    stroke-width="0.6"
+    opacity="0.45"
+  >Open for Business</text>
+</svg>

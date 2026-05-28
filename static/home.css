@@ -512,6 +512,23 @@ main .btn-secondary:hover {
   background: var(--alpine-gold-light);
 }
 
+.privacy-notice {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--alpine-muted);
+  max-width: 42rem;
+}
+
+.privacy-notice--light {
+  margin: 0 auto 1rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+}
+
+.home-footer .privacy-notice {
+  margin-bottom: 1rem;
+}
+
 /* —— Footer —— */
 .home-footer {
   max-width: 1100px;
