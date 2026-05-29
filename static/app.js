@@ -217,6 +217,16 @@ function showEntry() {
   getEl("entry-screen")?.classList.remove("hidden");
 }
 
+function scrollToPageTop() {
+  window.scrollTo(0, 0);
+}
+
+function showResultsScreen() {
+  getEl("entry-screen")?.classList.add("hidden");
+  getEl("results-screen")?.classList.remove("hidden");
+  requestAnimationFrame(scrollToPageTop);
+}
+
 function openTab(name, btn) {
   document.querySelectorAll(".tab-content").forEach((el) => el.classList.remove("active"));
   document.querySelectorAll(".tab").forEach((el) => el.classList.remove("active"));
@@ -1032,9 +1042,7 @@ async function calculate() {
   lastResults = results;
   syncAccordion(payload);
   renderResults(payload, results);
-
-  getEl("entry-screen")?.classList.add("hidden");
-  getEl("results-screen")?.classList.remove("hidden");
+  showResultsScreen();
 }
 
 async function recalculateFromAccordion() {
@@ -1056,6 +1064,7 @@ async function recalculateFromAccordion() {
   lastPayload = payload;
   lastResults = results;
   renderResults(payload, results);
+  scrollToPageTop();
 }
 
 function getCurrentInputsForExport() {
