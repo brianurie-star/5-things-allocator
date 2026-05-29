@@ -1,27 +1,6 @@
 /* Consulting page — small additions on top of home.css */
 
-/* Hero — soft white radial glow behind copy */
-.arc-consulting-hero .hero-stage::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 42%;
-  transform: translate(-50%, -50%);
-  width: min(95vw, 920px);
-  height: clamp(280px, 55vw, 480px);
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.94) 0%,
-    rgba(255, 255, 255, 0.72) 38%,
-    rgba(255, 255, 255, 0.28) 62%,
-    rgba(255, 255, 255, 0) 78%
-  );
-  filter: blur(2px);
-  pointer-events: none;
-  z-index: 1;
-}
-
+/* Hero — soft white radial glow tied to the logo */
 .arc-consulting-hero .hero-backdrop {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 22%),
@@ -39,9 +18,33 @@
   max-width: 92%;
   line-height: 0;
   pointer-events: none;
+  isolation: isolate;
+}
+
+.arc-hero-brand::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(95vw, 920px);
+  height: clamp(280px, 55vw, 480px);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.72) 38%,
+    rgba(255, 255, 255, 0.28) 62%,
+    rgba(255, 255, 255, 0) 78%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .arc-hero-logo {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
@@ -192,6 +195,11 @@
     width: clamp(4.5rem, 42vw, 10rem);
   }
 
+  .arc-consulting-hero .arc-hero-brand::before {
+    width: min(88vw, 420px);
+    height: clamp(180px, 50vw, 300px);
+  }
+
   .arc-consulting-hero .hero-overlay-copy {
     position: relative;
     margin-top: auto;
@@ -202,10 +210,6 @@
   .arc-consulting-hero .hero-overlay-copy h2 {
     white-space: normal;
     font-size: clamp(1.1rem, 5vw, 1.75rem);
-  }
-
-  .arc-consulting-hero .hero-stage::before {
-    top: 52%;
   }
 }
 
@@ -218,9 +222,9 @@
     width: clamp(3.75rem, 44vw, 7.25rem);
   }
 
-  .arc-consulting-hero .hero-stage::before {
-    width: min(100vw, 640px);
-    height: clamp(220px, 48vw, 360px);
+  .arc-consulting-hero .arc-hero-brand::before {
+    width: min(92vw, 360px);
+    height: clamp(160px, 46vw, 260px);
   }
 }
 
