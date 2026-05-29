@@ -35,7 +35,8 @@
   top: 46%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: min(22rem, 78vw);
+  width: clamp(5.5rem, 40vw, 22rem);
+  max-width: 92%;
   line-height: 0;
   pointer-events: none;
 }
@@ -44,6 +45,7 @@
   display: block;
   width: 100%;
   height: auto;
+  max-width: 100%;
 }
 
 .arc-consulting-hero .hero-overlay-copy {
@@ -131,5 +133,47 @@
 @media (max-width: 860px) {
   .arc-services-grid {
     grid-template-columns: 1fr;
+  }
+
+  .arc-firm-intro .advisor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .arc-firm-intro .advisor-aside {
+    width: 100%;
+    max-width: none;
+  }
+
+  .arc-consulting-hero .arc-hero-brand {
+    top: 42%;
+    width: clamp(4.5rem, 42vw, 10rem);
+  }
+
+  .arc-consulting-hero .hero-overlay-copy h2 {
+    white-space: normal;
+    font-size: clamp(1.1rem, 5vw, 1.75rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .arc-consulting-hero .hero-stage {
+    min-height: max(320px, 58vw);
+  }
+
+  .arc-consulting-hero .arc-hero-brand {
+    top: 38%;
+    width: clamp(3.75rem, 44vw, 7.25rem);
+  }
+
+  .arc-consulting-hero .hero-stage::before {
+    width: min(100vw, 640px);
+    height: clamp(220px, 48vw, 360px);
+  }
+}
+
+@media (max-width: 390px) {
+  .arc-consulting-hero .arc-hero-brand {
+    top: 36%;
+    width: min(48vw, 5.5rem);
   }
 }
