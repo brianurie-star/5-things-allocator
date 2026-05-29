@@ -51,8 +51,21 @@
   max-width: 100%;
 }
 
+.arc-consulting-hero .hero-stage {
+  overflow-x: clip;
+}
+
 .arc-consulting-hero .hero-overlay-copy {
   z-index: 2;
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.arc-consulting-hero .hero-overlay-copy p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .arc-consulting-hero .site-header--overlay {
@@ -204,7 +217,14 @@
     position: relative;
     margin-top: auto;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 0.75rem 1rem 1.5rem;
+  }
+
+  .arc-consulting-hero .hero-overlay-copy p {
+    font-size: clamp(0.82rem, 3.6vw, 1rem);
+    line-height: 1.5;
   }
 
   .arc-consulting-hero .hero-overlay-copy h2 {
