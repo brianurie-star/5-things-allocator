@@ -1,225 +1,85 @@
-/* Alpine home — hero mockup + sections (extends home.css) */
+/* Consulting page — small additions on top of home.css */
 
-/* —— Hero: full photo (peaks + treeline) + soft white mist —— */
-.arc-home-hero .hero-stage {
-  /* 1024×682 at full width, bottom 30% cropped via overflow */
-  min-height: max(380px, calc(100vw * 682 / 1024 * 0.7));
-  overflow: hidden;
-  justify-content: flex-start;
+/* Hero — soft white radial glow behind copy */
+.arc-consulting-hero .hero-stage::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: min(95vw, 920px);
+  height: clamp(280px, 55vw, 480px);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.72) 38%,
+    rgba(255, 255, 255, 0.28) 62%,
+    rgba(255, 255, 255, 0) 78%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.arc-home-hero .hero-backdrop {
+.arc-consulting-hero .hero-backdrop {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 22%),
+    linear-gradient(0deg, rgba(15, 31, 53, 0.55) 0%, rgba(15, 31, 53, 0.2) 32%, transparent 58%),
     url("/static/hero-background.png?v=3") center top / 100% auto no-repeat;
 }
 
-.arc-top-nav {
+.arc-hero-brand {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 4;
-  max-width: 1180px;
-  margin: 0 auto;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.arc-logo-header {
-  display: inline-block;
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: hidden;
-  height: clamp(57px, 7.1vw, 76px);
-  line-height: 0;
-  vertical-align: middle;
-}
-
-.arc-logo-header-img {
-  display: block;
-  height: clamp(68px, 8.5vw, 92px);
-  width: auto;
-  max-width: 220px;
-  object-fit: cover;
-  object-position: top center;
-}
-
-.arc-top-nav-links a {
-  color: var(--alpine-navy) !important;
-  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.9);
-}
-
-.arc-hero-body {
-  position: relative;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
   z-index: 2;
-  flex: 0 0 auto;
-  min-height: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  max-width: min(56rem, 100%);
-  margin: 0 auto;
-  padding: clamp(3rem, 6.5vw, 3.5rem) 1.75rem 2rem;
-  overflow: visible;
-}
-
-.arc-hero-body::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 32%;
-  transform: translate(-50%, -50%) scale(1.1);
-  width: min(172vw, 1300px);
-  height: clamp(625px, 118vw, 1025px);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.58);
-  filter: blur(140px);
+  width: min(22rem, 78vw);
+  line-height: 0;
   pointer-events: none;
-  z-index: 0;
 }
 
-.arc-hero-centered {
-  position: relative;
-  isolation: isolate;
-  z-index: 1;
-  max-width: min(52rem, 96vw);
-  text-align: center;
-  padding: clamp(1.875rem, 4.4vw, 2.8rem) clamp(2.2rem, 5vw, 3.4rem);
-  background: transparent;
-  transform: scale(1.1);
-  transform-origin: top center;
-}
-
-/* Soft mist — blurred layers avoid gradient banding / visible rings */
-.arc-hero-centered::before,
-.arc-hero-centered::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.arc-hero-centered::before {
-  top: 34%;
-  width: clamp(500px, 140vw, 1100px);
-  height: clamp(538px, 98vw, 825px);
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.97);
-  filter: blur(90px);
-}
-
-.arc-hero-centered::after {
-  top: 36%;
-  width: clamp(588px, 170vw, 1275px);
-  height: clamp(650px, 112vw, 975px);
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.68);
-  filter: blur(135px);
-  z-index: -2;
-}
-
-.arc-hero-logo-match {
-  display: grid;
-  justify-items: stretch;
-  width: fit-content;
-  max-width: 100%;
-  margin: 0 auto 0.95rem;
-}
-
-.arc-hero-headline--width-ref {
-  grid-area: 1 / 1;
-  visibility: hidden;
-  max-height: 0;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.arc-hero-logo-main {
-  grid-area: 1 / 1;
+.arc-hero-logo {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0;
-  object-fit: contain;
 }
 
-.arc-hero-headline {
-  margin: 0 0 0.95rem;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: clamp(1.7rem, 4vw, 2.94rem);
-  line-height: 1.15;
-  color: var(--alpine-navy);
-  letter-spacing: 0.01em;
-  text-shadow: none;
+.arc-consulting-hero .hero-overlay-copy {
+  z-index: 2;
 }
 
-.arc-hero-rule {
-  width: min(225px, 52%);
-  height: 1px;
-  margin: 0 auto 0.8rem;
-  border: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(27, 45, 71, 0.18) 35%,
-    rgba(27, 45, 71, 0.18) 65%,
-    transparent 100%
-  );
+.arc-consulting-hero .site-header--overlay {
+  z-index: 3;
 }
 
-.arc-hero-tagline {
-  margin: 0 0 0.8rem;
-  font-family: var(--font-serif);
-  font-size: clamp(1.2rem, 2.75vw, 1.56rem);
-  font-weight: 500;
-  color: var(--alpine-gold-dark);
-  text-shadow: none;
+.arc-firm-intro {
+  padding-top: 2.5rem;
+  padding-bottom: 1.5rem;
 }
 
-.arc-hero-dek {
-  margin: 0 0 1.25rem;
-  font-family: var(--font-sans);
-  font-size: clamp(1.125rem, 2.25vw, 1.31rem);
-  line-height: 1.55;
-  color: var(--alpine-navy);
-  text-shadow: none;
+.arc-firm-intro .advisor-layout {
+  grid-template-columns: 1.15fr minmax(0, 25.125rem);
 }
 
-.arc-home-hero .arc-hero-centered .btn-nav {
-  padding: 0.8125rem 1.375rem !important;
-  font-size: 0.9rem !important;
+.arc-firm-intro .aside-card h3 {
+  font-size: 1.15rem;
 }
 
-/* —— Below hero: intro + five needs —— */
-.arc-home-hero {
-  background: var(--alpine-navy-dark);
-  overflow: hidden;
+.arc-firm-intro .advisor-copy h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.85rem;
 }
 
-/* —— Hero extension: sign bridges mountain hero → service tiles —— */
-.arc-hero-extension {
-  position: relative;
-  z-index: 0;
-  background: var(--alpine-bg);
+.arc-open-sign-block {
   max-width: 1100px;
   margin: 0 auto;
-  padding: clamp(1rem, 2.5vw, 1.75rem) 1.75rem clamp(1rem, 2.5vw, 1.5rem);
+  padding: clamp(0.5rem, 2vw, 1rem) 1.75rem 0.5rem;
   text-align: center;
 }
 
 .arc-open-sign {
-  position: relative;
-  z-index: 1;
   display: block;
   width: min(400px, 78vw);
   height: auto;
@@ -227,61 +87,25 @@
   filter: drop-shadow(0 12px 32px rgba(15, 31, 53, 0.14));
 }
 
-.arc-below-hero {
-  position: relative;
-  z-index: 1;
-  background: var(--alpine-bg);
-  padding-top: 1.25rem;
-  padding-bottom: 0.75rem;
+.arc-services-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.arc-intro-layout {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.25rem;
-  align-items: start;
-}
-
-.arc-below-intro h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.85rem;
-}
-
-.arc-below-intro p:last-child {
-  margin-bottom: 0;
-}
-
-.arc-needs-card h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.05rem;
-}
-
-.arc-needs-list {
-  margin: 0;
-  padding-left: 1.25rem;
+.thing-card-list {
+  margin: 0.75rem 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
   color: var(--alpine-muted);
-  font-size: 0.92rem;
 }
 
-.arc-needs-list li {
-  margin-bottom: 0.3rem;
+.thing-card-list li + li {
+  margin-top: 0.3rem;
 }
 
-.arc-needs-list li:last-child {
-  margin-bottom: 0;
-}
-
-.arc-services {
-  padding-top: 0.35rem;
-  padding-bottom: 2rem;
-}
-
-.arc-service-grid {
-  list-style: none;
-}
-
-.arc-service-grid .thing-card h3 {
-  margin-top: 0;
+.thing-card-link {
+  margin: 0 !important;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .thing-card--cta {
@@ -289,29 +113,12 @@
   flex-direction: column;
 }
 
-.arc-tile-allocator-btn {
+.thing-card-btn {
   margin-top: auto;
   align-self: flex-start;
 }
 
-.arc-tile-list {
-  margin: 0 0 0.75rem;
-  padding-left: 1.1rem;
-  font-size: 0.9rem;
-  color: var(--alpine-muted);
-}
-
-.arc-tile-list li {
-  margin-bottom: 0.3rem;
-}
-
-.arc-tile-link {
-  margin: 0 !important;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.arc-advisor-photo {
+.advisor-photo {
   display: block;
   width: 100%;
   max-width: 220px;
@@ -321,47 +128,8 @@
   border: 1px solid var(--alpine-border);
 }
 
-.arc-tile-actions {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: auto;
-}
-
-.arc-tile-actions .btn {
-  flex: 0 1 auto;
-  white-space: nowrap;
-  padding: 0.65rem 1rem !important;
-  font-size: 0.72rem !important;
-}
-
-@media (max-width: 520px) {
-  .arc-tile-actions {
-    flex-wrap: wrap;
-  }
-}
-
 @media (max-width: 860px) {
-  .arc-top-nav {
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.75rem;
-  }
-
-  .arc-logo-header {
-    margin-right: auto;
-  }
-
-  .arc-top-nav-links {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    margin-left: 0 !important;
-  }
-
-  .arc-intro-layout {
+  .arc-services-grid {
     grid-template-columns: 1fr;
   }
 }

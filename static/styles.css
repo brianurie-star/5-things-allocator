@@ -23,6 +23,28 @@ body {
   padding: 28px;
 }
 
+.allocator-site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.allocator-site-nav a {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--alpine-navy-mid);
+}
+
+.allocator-site-nav a:hover {
+  color: var(--alpine-gold-dark);
+}
+
 h1 {
   margin: 0 0 8px;
   font-family: var(--font-serif);
